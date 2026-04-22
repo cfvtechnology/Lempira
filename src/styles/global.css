@@ -79,6 +79,56 @@ body {
   }
 }
 
+/* ──────────────────────────────────────────────────────────
+   Icon Button — shared across cards (copy, share, etc.)
+   Must be global so scoped-style children (ShareButton) inherit
+   ────────────────────────────────────────────────────────── */
+.icon-btn {
+  background: transparent;
+  border: 1px solid rgba(72, 202, 228, 0.2);
+  color: var(--cfv-accent);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  padding: 0;
+  font: inherit;
+}
+
+.icon-btn:hover {
+  background: rgba(72, 202, 228, 0.1);
+  border-color: var(--cfv-accent);
+}
+
+.icon-btn:focus-visible {
+  outline: none;
+  border-color: var(--cfv-accent);
+  box-shadow: 0 0 0 3px rgba(72, 202, 228, 0.25);
+}
+
+[data-theme="light"] .icon-btn {
+  background: transparent;
+  border-color: var(--cfv-border);
+  color: var(--cfv-primary);
+}
+
+[data-theme="light"] .icon-btn:hover {
+  background: rgba(0, 119, 182, 0.06);
+  border-color: var(--cfv-primary);
+}
+
+[data-theme="light"] .icon-btn:focus-visible {
+  border-color: var(--cfv-primary);
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.2);
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

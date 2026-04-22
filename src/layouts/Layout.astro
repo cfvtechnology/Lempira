@@ -31,12 +31,17 @@ const locale = "es_HN";
     <meta name="author" content={siteName} />
     <link rel="canonical" href={canonical} />
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(ogImage, Astro.site).href} />
+    <meta property="og:image:secure_url" content={new URL(ogImage, Astro.site).href} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Lempira · Calculadora de precios para Honduras" />
     <meta property="og:locale" content={locale} />
     <meta property="og:site_name" content={siteName} />
 
@@ -46,6 +51,7 @@ const locale = "es_HN";
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(ogImage, Astro.site).href} />
+    <meta property="twitter:image:alt" content="Lempira · Calculadora de precios para Honduras" />
 
     <!-- JSON-LD Structured Data -->
     <script

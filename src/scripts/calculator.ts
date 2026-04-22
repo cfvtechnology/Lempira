@@ -157,8 +157,6 @@ function resetForm() {
 }
 
 function copyPrice(type: string) {
-  const toast = document.getElementById("copyToast")!;
-  const toastText = document.getElementById("copyToastText")!;
   let value: string, label: string;
 
   if (type === "retail") {
@@ -172,17 +170,124 @@ function copyPrice(type: string) {
   const text = "L " + value;
   navigator.clipboard.writeText(text).catch(() => {});
 
-  toastText.textContent = label + " copiado: " + text;
+  showToast(label + " copiado: " + text);
+}
+
+function showToast(message: string) {
+  const toast = document.getElementById("copyToast")!;
+  const toastText = document.getElementById("copyToastText")!;
+  toastText.textContent = message;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 2200);
 }
+
+// ──────────────────────────────────────────────────────────────
+// Share functionality
+// ──────────────────────────────────────────────────────────────
+
+const SHARE_URL = "https://lempira.cfv.technology";
+const SHARE_TEXT =
+  "Acabo de usar Lempira 🇭🇳 para calcular mis precios como emprendedor hondureño. Gratis, en lempiras. Se los recomiendo.";
+const SHARE_TITLE = "Lempira · Calculadora de precios";
+
+function shareLempira(menuId: string) {
+  const shareData = {
+    title: SHARE_TITLE,
+    text: SHARE_TEXT,
+    url: SHARE_URL,
+  };
+
+  // Try native Web Share API first (mobile + modern browsers)
+  if (typeof navigator.share === "function") {
+    navigator.share(shareData).catch((err) => {
+      if (err.name !== "AbortError") {
+        // Fallback to menu if share fails for non-user reasons
+        openShareMenu(menuId);
+      }
+    });
+    return;
+  }
+
+  // Fallback: show dropdown menu
+  openShareMenu(menuId);
+}
+
+function openShareMenu(menuId: string) {
+  // Close any other open share menu first
+  document.querySelectorAll(".share-menu.open").forEach((el) => {
+    if (el.id !== menuId) el.classList.remove("open");
+  });
+
+  const menu = document.getElementById(menuId);
+  const trigger = document.getElementById(menuId + "-trigger");
+  if (!menu || !trigger) return;
+
+  menu.classList.toggle("open");
+  trigger.setAttribute(
+    "aria-expanded",
+    menu.classList.contains("open") ? "true" : "false",
+  );
+}
+
+function closeAllShareMenus() {
+  document.querySelectorAll(".share-menu.open").forEach((el) => {
+    el.classList.remove("open");
+    const trigger = document.getElementById(el.id + "-trigger");
+    trigger?.setAttribute("aria-expanded", "false");
+  });
+}
+
+function shareVia(platform: string) {
+  const encodedText = encodeURIComponent(SHARE_TEXT);
+  const encodedUrl = encodeURIComponent(SHARE_URL);
+  const encodedFull = encodeURIComponent(SHARE_TEXT + " " + SHARE_URL);
+
+  const urls: Record<string, string> = {
+    whatsapp: `https://wa.me/?text=${encodedFull}`,
+    twitter: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
+  };
+
+  if (platform === "copy") {
+    navigator.clipboard
+      .writeText(SHARE_TEXT + " " + SHARE_URL)
+      .then(() => showToast("Link copiado al portapapeles"))
+      .catch(() => {});
+  } else if (urls[platform]) {
+    window.open(urls[platform], "_blank", "noopener,noreferrer");
+  }
+
+  closeAllShareMenus();
+}
+
+// Close menus on outside click
+document.addEventListener("click", (e) => {
+  const target = e.target as HTMLElement;
+  if (!target.closest(".share-wrapper")) {
+    closeAllShareMenus();
+  }
+});
+
+// Close menus with Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeAllShareMenus();
+});
 
 // Theme initialization
 const savedTheme = localStorage.getItem("cfv-theme");
 if (savedTheme) setTheme(savedTheme);
 
 // Expose to global scope for inline event handlers
-Object.assign(window, { setTheme, calculate, resetForm, copyPrice });
+Object.assign(window, {
+  setTheme,
+  calculate,
+  resetForm,
+  copyPrice,
+  shareLempira,
+  shareVia,
+});
 
 // Initial calculation
 calculate();

@@ -2,6 +2,7 @@
 import Card from "./Card.astro";
 import BreakdownRow from "./BreakdownRow.astro";
 import MarginIndicator from "./MarginIndicator.astro";
+import ShareButton from "./ShareButton.astro";
 ---
 
 <Card title="Precio mayorista" badge="Mayorista" animationDelay="0.2s" id="wholesaleCard" hidden>
@@ -14,12 +15,15 @@ import MarginIndicator from "./MarginIndicator.astro";
           <span id="wholesalePrice">0.00</span>
         </div>
       </div>
-      <button class="icon-btn" onclick="copyPrice('wholesale')" title="Copiar precio">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>
-      </button>
+      <div class="actions-group">
+        <button class="icon-btn" onclick="copyPrice('wholesale')" title="Copiar precio" aria-label="Copiar precio">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+        <ShareButton id="wholesaleShareMenu" />
+      </div>
     </div>
 
     <div class="result-meta">
@@ -118,33 +122,10 @@ import MarginIndicator from "./MarginIndicator.astro";
     font-weight: 600;
   }
 
-  .icon-btn {
-    background: transparent;
-    border: 1px solid rgba(72, 202, 228, 0.2);
-    color: var(--cfv-accent);
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
+  .actions-group {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .icon-btn:hover {
-    background: rgba(72, 202, 228, 0.1);
-    border-color: var(--cfv-accent);
-  }
-
-  :global([data-theme="light"]) .icon-btn {
-    border-color: var(--cfv-border);
-    color: var(--cfv-primary);
-  }
-
-  :global([data-theme="light"]) .icon-btn:hover {
-    background: rgba(0, 119, 182, 0.06);
-    border-color: var(--cfv-primary);
+    gap: 8px;
   }
 
   .breakdown {
