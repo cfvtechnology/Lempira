@@ -146,9 +146,9 @@ function calculate() {
 function resetForm() {
   (document.getElementById("productName") as HTMLInputElement).value = "";
   (document.getElementById("cost") as HTMLInputElement).value = "";
-  (document.getElementById("profit") as HTMLInputElement).value = "30";
+  (document.getElementById("profit") as HTMLInputElement).value = "100";
   (document.getElementById("iva") as HTMLInputElement).value = "15";
-  (document.getElementById("bankFee") as HTMLInputElement).value = "3.5";
+  (document.getElementById("bankFee") as HTMLInputElement).value = "4.5";
   (document.getElementById("marketing") as HTMLInputElement).value = "10";
   (document.getElementById("otherCosts") as HTMLInputElement).value = "0";
   (document.getElementById("wholesaleDiscount") as HTMLInputElement).value = "30";

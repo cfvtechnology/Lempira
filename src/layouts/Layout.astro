@@ -13,7 +13,8 @@ const {
   ogImage = "/og-image.png",
 } = Astro.props;
 
-const siteName = "CFV Technology";
+const siteName = "Lempira";
+const publisherName = "CFV Technology";
 const locale = "es_HN";
 ---
 
@@ -53,7 +54,7 @@ const locale = "es_HN";
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        name: "Calculadora de Pricing - CFV Technology",
+        name: "Lempira - Calculadora de precios",
         description,
         url: canonical,
         applicationCategory: "BusinessApplication",
@@ -65,7 +66,13 @@ const locale = "es_HN";
         },
         creator: {
           "@type": "Organization",
-          name: siteName,
+          name: publisherName,
+          url: "https://cfv.technology",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: publisherName,
+          url: "https://cfv.technology",
         },
         inLanguage: "es-HN",
       })}
@@ -80,7 +87,9 @@ const locale = "es_HN";
     />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/cfv-icon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/cfv-icon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
 
     <slot name="head" />
   </head>

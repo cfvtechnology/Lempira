@@ -1,0 +1,142 @@
+---
+interface Props {
+  label: string;
+  valueId: string;
+  markerType?: "add" | "sub" | "neutral";
+  pctId?: string;
+  defaultPct?: string;
+  isSubtotal?: boolean;
+  highlighted?: boolean;
+  negativeColor?: boolean;
+}
+
+const {
+  label,
+  valueId,
+  markerType,
+  pctId,
+  defaultPct,
+  isSubtotal = false,
+  highlighted = false,
+  negativeColor = false,
+} = Astro.props;
+---
+
+<div class:list={["row", { subtotal: isSubtotal }]}>
+  <span class="row-label">
+    {markerType && <span class:list={["marker", markerType]} />}
+    {label}
+    {pctId && <span id={pctId} class="row-pct">({defaultPct})</span>}
+  </span>
+  <span
+    class:list={["row-value", { highlighted, "negative-color": negativeColor }]}
+    id={valueId}
+  >
+    L 0.00
+  </span>
+</div>
+
+<style>
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(72, 202, 228, 0.06);
+  }
+
+  :global([data-theme="light"]) .row {
+    border-bottom-color: var(--cfv-border-subtle);
+  }
+
+  .row:last-child {
+    border-bottom: none;
+  }
+
+  .row.subtotal {
+    padding: 12px 0;
+    margin-top: 4px;
+    border-top: 1px solid rgba(72, 202, 228, 0.12);
+    border-bottom: 1px solid rgba(72, 202, 228, 0.12);
+  }
+
+  :global([data-theme="light"]) .row.subtotal {
+    border-top-color: var(--cfv-border);
+    border-bottom-color: var(--cfv-border);
+  }
+
+  .row.subtotal .row-label {
+    color: var(--cfv-text);
+    font-weight: 600;
+  }
+
+  .row.subtotal .row-value {
+    color: var(--cfv-text);
+    font-weight: 700;
+  }
+
+  .row-label {
+    color: var(--cfv-neutral);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  :global([data-theme="light"]) .row-label {
+    color: var(--cfv-row-text);
+  }
+
+  .marker {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .marker.add {
+    background: var(--cfv-accent);
+  }
+  .marker.sub {
+    background: #ef6b6b;
+  }
+  .marker.neutral {
+    background: var(--cfv-neutral);
+    opacity: 0.5;
+  }
+
+  :global([data-theme="light"]) .marker.add {
+    background: var(--cfv-primary);
+  }
+  :global([data-theme="light"]) .marker.sub {
+    background: #dc2626;
+  }
+
+  .row-value {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cfv-text);
+  }
+
+  :global([data-theme="light"]) .row-value {
+    color: var(--cfv-text);
+  }
+
+  .row-value.highlighted {
+    color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .row-value.highlighted {
+    color: var(--cfv-primary);
+  }
+
+  .row-value.negative-color {
+    color: #ef6b6b;
+  }
+
+  .row-pct {
+    opacity: 0.5;
+    font-size: 11px;
+  }
+</style>

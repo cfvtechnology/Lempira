@@ -1,0 +1,168 @@
+<header class="header">
+  <a href="/" class="brand" aria-label="Lempira · Inicio">
+    <span class="brand-logo" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 10 H24 V40 H46 V54 H10 Z" />
+        <circle cx="55" cy="47" r="6" />
+      </svg>
+    </span>
+    <span class="brand-text">
+      <span class="brand-name">Lempira</span>
+      <span class="brand-sub">Calculadora de precios</span>
+    </span>
+  </a>
+
+  <div class="theme-toggle">
+    <button class="theme-btn active" data-theme-btn="dark" onclick="setTheme('dark')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      Oscuro
+    </button>
+    <button class="theme-btn" data-theme-btn="light" onclick="setTheme('light')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      Claro
+    </button>
+  </div>
+</header>
+
+<style>
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 10px;
+    padding: 4px 6px;
+    margin: -4px -6px;
+    transition: background 0.2s ease;
+  }
+
+  .brand:hover {
+    background: rgba(72, 202, 228, 0.06);
+  }
+
+  :global([data-theme="light"]) .brand:hover {
+    background: rgba(0, 119, 182, 0.05);
+  }
+
+  .brand:focus-visible {
+    outline: none;
+    background: rgba(72, 202, 228, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 202, 228, 0.25);
+  }
+
+  :global([data-theme="light"]) .brand:focus-visible {
+    background: rgba(0, 119, 182, 0.08);
+    box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.2);
+  }
+
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--cfv-bg);
+    color: var(--cfv-accent);
+    border: 1px solid rgba(72, 202, 228, 0.2);
+  }
+
+  :global([data-theme="light"]) .brand-logo {
+    background: #f8fafc;
+    color: var(--cfv-primary);
+    border-color: var(--cfv-border-subtle);
+  }
+
+  .brand-logo svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  .brand-text {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .brand-name {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    color: var(--cfv-neutral);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(72, 202, 228, 0.08);
+    border: 1px solid rgba(72, 202, 228, 0.2);
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  :global([data-theme="light"]) .theme-toggle {
+    background: #f8fafc;
+    border: 1.5px solid var(--cfv-border);
+  }
+
+  .theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--cfv-neutral);
+    font-family: "Manrope", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .theme-btn.active {
+    background: var(--cfv-accent);
+    color: #012a4a;
+  }
+  :global([data-theme="light"]) .theme-btn.active {
+    background: var(--cfv-accent);
+    color: #f8fafc;
+  }
+
+  .theme-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+</style>

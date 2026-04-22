@@ -1,0 +1,77 @@
+<section class="title-section">
+  <div class="kicker">
+    <span class="kicker-line"></span>
+    <span class="kicker-text">Calculadora de precios &middot; Honduras</span>
+  </div>
+  <h1>Tu precio final, <span class="accent-word">calculado.</span></h1>
+  <p class="subtitle">
+    Definí costos, márgenes e impuestos. Obtené el precio óptimo al detalle
+    y mayorista en tiempo real, sin planillas.
+  </p>
+</section>
+
+<style>
+  .title-section {
+    margin-bottom: 40px;
+    max-width: 680px;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .kicker-line {
+    width: 24px;
+    height: 1px;
+    background: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .kicker-line {
+    background: var(--cfv-primary);
+  }
+
+  .kicker-text {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .kicker-text {
+    color: var(--cfv-primary);
+  }
+
+  h1 {
+    font-family: "Manrope", sans-serif;
+    font-weight: 800;
+    font-size: 44px;
+    letter-spacing: -1.8px;
+    line-height: 1.02;
+    margin-bottom: 12px;
+  }
+
+  h1 .accent-word {
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--cfv-accent);
+    letter-spacing: -1px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--cfv-neutral);
+    max-width: 560px;
+  }
+
+  @media (max-width: 960px) {
+    h1 {
+      font-size: 36px;
+    }
+  }
+</style>

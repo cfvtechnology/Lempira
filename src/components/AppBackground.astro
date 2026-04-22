@@ -1,0 +1,59 @@
+<div class="bg-glow bg-glow-tr"></div>
+<div class="bg-glow bg-glow-bl"></div>
+<div class="bg-grid"></div>
+
+<style>
+  .bg-glow {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .bg-glow-tr {
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--cfv-primary) 0%, transparent 70%);
+    opacity: 0.35;
+  }
+
+  .bg-glow-bl {
+    bottom: -250px;
+    left: -150px;
+    width: 550px;
+    height: 550px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--cfv-secondary) 0%, transparent 70%);
+    opacity: 0.25;
+  }
+
+  :global([data-theme="light"]) .bg-glow-tr {
+    opacity: 0.12;
+  }
+  :global([data-theme="light"]) .bg-glow-bl {
+    opacity: 0.1;
+  }
+
+  .bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(72, 202, 228, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(72, 202, 228, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  :global([data-theme="light"]) .bg-grid {
+    background-image:
+      linear-gradient(rgba(0, 119, 182, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 119, 182, 0.05) 1px, transparent 1px);
+  }
+</style>

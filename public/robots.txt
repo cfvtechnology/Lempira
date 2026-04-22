@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pricing.cfvtechnology.com/sitemap-index.xml
+Sitemap: https://lempira.cfv.technology/sitemap-index.xml

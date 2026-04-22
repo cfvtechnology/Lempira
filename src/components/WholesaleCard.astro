@@ -1,0 +1,159 @@
+---
+import Card from "./Card.astro";
+import BreakdownRow from "./BreakdownRow.astro";
+import MarginIndicator from "./MarginIndicator.astro";
+---
+
+<Card title="Precio mayorista" badge="Mayorista" animationDelay="0.2s" id="wholesaleCard" hidden>
+  <div class="result-headline">
+    <div class="price-header">
+      <div>
+        <div class="result-label">Precio mayorista</div>
+        <div class="result-price primary">
+          <span class="currency">L</span>
+          <span id="wholesalePrice">0.00</span>
+        </div>
+      </div>
+      <button class="icon-btn" onclick="copyPrice('wholesale')" title="Copiar precio">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="result-meta">
+      <div class="meta-item">
+        <span class="meta-label">Ganancia neta</span>
+        <span class="meta-value" id="wholesaleProfit">L 0.00</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Margen real</span>
+        <span class="meta-value" id="wholesaleMargin">0.0%</span>
+      </div>
+    </div>
+  </div>
+
+  <MarginIndicator
+    containerId="wholesaleMarginIndicator"
+    healthValueId="wholesaleHealthValue"
+    fillId="wholesaleMarginFill"
+  />
+
+  <div class="breakdown">
+    <BreakdownRow label="Subtotal detalle" valueId="wh-subtotal" markerType="neutral" />
+    <BreakdownRow label="Dcto. s/ganancia" valueId="wh-discount" markerType="sub" pctId="wh-disc-pct" defaultPct="30%" negativeColor />
+    <BreakdownRow label="Subtotal mayorista" valueId="wh-submayorista" isSubtotal />
+    <BreakdownRow label="IVA" valueId="wh-iva" markerType="add" />
+    <BreakdownRow label="Comisión banco" valueId="wh-fee" markerType="add" />
+    <BreakdownRow label="Pub + Otros" valueId="wh-extras" markerType="neutral" />
+  </div>
+</Card>
+
+<style>
+  .result-headline {
+    margin-bottom: 20px;
+  }
+
+  .price-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .result-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cfv-neutral);
+    margin-bottom: 6px;
+  }
+
+  .result-price {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 42px;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .result-price .currency {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--cfv-neutral);
+  }
+
+  .result-price.primary {
+    color: var(--cfv-primary);
+  }
+
+  .result-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cfv-neutral);
+  }
+
+  .meta-value {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .icon-btn {
+    background: transparent;
+    border: 1px solid rgba(72, 202, 228, 0.2);
+    color: var(--cfv-accent);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .icon-btn:hover {
+    background: rgba(72, 202, 228, 0.1);
+    border-color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .icon-btn {
+    border-color: var(--cfv-border);
+    color: var(--cfv-primary);
+  }
+
+  :global([data-theme="light"]) .icon-btn:hover {
+    background: rgba(0, 119, 182, 0.06);
+    border-color: var(--cfv-primary);
+  }
+
+  .breakdown {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(72, 202, 228, 0.15);
+  }
+
+  :global([data-theme="light"]) .breakdown {
+    border-top-color: var(--cfv-border-subtle);
+  }
+</style>

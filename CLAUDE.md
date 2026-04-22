@@ -4,7 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-CFV Technology pricing calculator — an Astro static site for calculating retail and wholesale prices in Honduran Lempiras (HNL). Includes full SEO (Open Graph, Twitter Cards, JSON-LD structured data, sitemap, robots.txt).
+**Lempira** — a free pricing calculator for Honduran entrepreneurs, built by CFV Technology and offered to the community. Astro static site for calculating retail and wholesale prices in Honduran Lempiras (HNL). Includes full SEO (Open Graph, Twitter Cards, JSON-LD structured data, sitemap, robots.txt).
+
+- **Product name**: Lempira
+- **Publisher / creator**: CFV Technology (attribution only, not product name)
+- **Domain**: https://lempira.cfv.technology
 
 ## Commands
 
@@ -28,7 +32,7 @@ public/
 └── robots.txt              # Crawl rules + sitemap reference
 ```
 
-Astro config (`astro.config.mjs`): site URL set to `https://pricing.cfvtechnology.com`, `@astrojs/sitemap` integration enabled.
+Astro config (`astro.config.mjs`): site URL set to `https://lempira.cfv.technology`, `@astrojs/sitemap` integration enabled.
 
 ## Calculation Logic
 
@@ -42,7 +46,9 @@ Percentages are applied to COST (profit, marketing, other), except IVA (applied 
 
 ### Defaults (Honduras market)
 
-Profit 30%, IVA 15%, bank fee 3.5%, marketing 10%, wholesale discount 30%.
+Profit 100%, IVA 15%, bank fee (comisión bancaria) 4.5%, marketing 10%, other costs 0%, wholesale discount 30%. Cost example value: 333.
+
+**Source of truth**: `src/components/InputCard.astro` (the `<InputField value={…}>` attributes). If you change a default, update this section too.
 
 ## Conventions
 

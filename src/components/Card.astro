@@ -1,0 +1,107 @@
+---
+interface Props {
+  title: string;
+  badge: string;
+  id?: string;
+  animationDelay?: string;
+  hidden?: boolean;
+}
+
+const {
+  title,
+  badge,
+  id,
+  animationDelay,
+  hidden = false,
+} = Astro.props;
+
+const style = [
+  animationDelay ? `animation-delay: ${animationDelay}; opacity: 0` : "",
+  hidden ? "display: none" : "",
+].filter(Boolean).join("; ");
+---
+
+<div
+  class:list={["card", { "animate-in": animationDelay }]}
+  id={id}
+  style={style || undefined}
+>
+  <div class="card-header">
+    <span class="card-title">{title}</span>
+    <span class="card-badge">{badge}</span>
+  </div>
+  <slot />
+</div>
+
+<style>
+  .card {
+    background: rgba(13, 27, 42, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(72, 202, 228, 0.15);
+    border-radius: 16px;
+    padding: 28px;
+    transition:
+      background 0.4s ease,
+      border-color 0.4s ease;
+  }
+
+  :global([data-theme="light"]) .card {
+    background: #ffffff;
+    border: 1.5px solid var(--cfv-border);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.06),
+      0 6px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(72, 202, 228, 0.12);
+  }
+
+  :global([data-theme="light"]) .card-header {
+    border-bottom-color: var(--cfv-border-subtle);
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .card-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cfv-accent);
+    border: 1px solid var(--cfv-secondary);
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  :global([data-theme="light"]) .card-badge {
+    color: var(--cfv-primary);
+    border-color: var(--cfv-primary);
+    background: rgba(0, 119, 182, 0.06);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-in {
+    animation: fadeIn 0.4s ease forwards;
+  }
+</style>

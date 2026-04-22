@@ -1,0 +1,162 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  type?: "text" | "number";
+  value?: string | number;
+  step?: number;
+  min?: number;
+  max?: number;
+  prefix?: string;
+  suffix?: string;
+  required?: boolean;
+  optional?: boolean;
+  placeholder?: string;
+}
+
+const {
+  id,
+  label,
+  type = "number",
+  value,
+  step,
+  min,
+  max,
+  prefix,
+  suffix,
+  required = false,
+  optional = false,
+  placeholder,
+} = Astro.props;
+---
+
+<div class="field-group">
+  <label class="field-label" for={id}>
+    {label}
+    {required && <span class="req">*</span>}
+    {optional && <span class="optional">&mdash; opcional</span>}
+  </label>
+  <div class="input-wrap">
+    {prefix && <span class="input-prefix">{prefix}</span>}
+    <input
+      type={type}
+      id={id}
+      class:list={["field", { "with-prefix": prefix, "with-suffix": suffix }]}
+      value={value}
+      step={step}
+      min={min}
+      max={max}
+      placeholder={placeholder}
+      oninput="calculate()"
+    />
+    {suffix && <span class="input-suffix">{suffix}</span>}
+  </div>
+</div>
+
+<style>
+  .field-group {
+    margin-bottom: 18px;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cfv-neutral);
+    margin-bottom: 8px;
+  }
+
+  .field-label .req {
+    color: var(--cfv-accent);
+    margin-left: 2px;
+  }
+
+  .field-label .optional {
+    color: var(--cfv-neutral);
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-prefix,
+  .input-suffix {
+    position: absolute;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--cfv-neutral);
+    pointer-events: none;
+    transition: color 0.2s ease;
+  }
+
+  .input-prefix {
+    left: 14px;
+  }
+  .input-suffix {
+    right: 14px;
+  }
+
+  .field {
+    width: 100%;
+    background: rgba(13, 27, 42, 0.4);
+    border: 1px solid rgba(72, 202, 228, 0.15);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--cfv-text);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+
+  :global([data-theme="light"]) .field {
+    background: #f8fafc;
+    border: 1.5px solid var(--cfv-border);
+  }
+
+  .field.with-prefix {
+    padding-left: 32px;
+  }
+  .field.with-suffix {
+    padding-right: 32px;
+  }
+
+  .field:focus {
+    border-color: var(--cfv-accent);
+    background: rgba(72, 202, 228, 0.06);
+    box-shadow: 0 0 0 3px rgba(72, 202, 228, 0.12);
+  }
+
+  :global([data-theme="light"]) .field:focus {
+    background: #ffffff;
+    border-color: var(--cfv-primary);
+    box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.12);
+  }
+
+  .field:hover:not(:focus) {
+    border-color: rgba(72, 202, 228, 0.3);
+  }
+
+  :global([data-theme="light"]) .field:hover:not(:focus) {
+    background: #ffffff;
+    border-color: var(--cfv-border-strong);
+  }
+
+  .field::-webkit-outer-spin-button,
+  .field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .field[type="number"] {
+    -moz-appearance: textfield;
+  }
+</style>

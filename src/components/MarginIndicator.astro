@@ -1,0 +1,96 @@
+---
+interface Props {
+  containerId: string;
+  healthValueId: string;
+  fillId: string;
+  defaultLabel?: string;
+}
+
+const {
+  containerId,
+  healthValueId,
+  fillId,
+  defaultLabel = "—",
+} = Astro.props;
+---
+
+<div class="margin-indicator" id={containerId}>
+  <div class="margin-top">
+    <span class="margin-top-label">Salud del margen</span>
+    <span class="margin-top-value" id={healthValueId}>{defaultLabel}</span>
+  </div>
+  <div class="margin-bar">
+    <div class="margin-fill" id={fillId} style="width: 0%"></div>
+  </div>
+</div>
+
+<style>
+  .margin-indicator {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(72, 202, 228, 0.06);
+    border: 1px solid rgba(72, 202, 228, 0.2);
+    border-radius: 10px;
+  }
+
+  :global([data-theme="light"]) .margin-indicator {
+    background: rgba(0, 119, 182, 0.05);
+    border-color: var(--cfv-border);
+  }
+
+  .margin-indicator:global(.warning) {
+    background: rgba(239, 107, 107, 0.06);
+    border-color: rgba(239, 107, 107, 0.25);
+  }
+
+  .margin-indicator:global(.warning) .margin-top-label {
+    color: #ef6b6b;
+  }
+
+  :global([data-theme="light"]) .margin-indicator:global(.warning) .margin-top-label {
+    color: #dc2626;
+  }
+
+  .margin-indicator:global(.warning) .margin-fill {
+    background: #ef6b6b;
+  }
+
+  .margin-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .margin-top-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .margin-top-label {
+    color: var(--cfv-primary);
+  }
+
+  .margin-top-value {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .margin-bar {
+    height: 4px;
+    background: rgba(72, 202, 228, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .margin-fill {
+    height: 100%;
+    background: var(--cfv-accent);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+</style>

@@ -1,0 +1,103 @@
+---
+import Card from "./Card.astro";
+import InputField from "./InputField.astro";
+---
+
+<Card title="Datos del producto" badge="Datos">
+  <InputField
+    id="productName"
+    label="Nombre del producto"
+    type="text"
+    placeholder="Ej: Brazalete"
+    optional
+  />
+
+  <InputField
+    id="cost"
+    label="Precio de costo"
+    value={333}
+    step={0.01}
+    min={0}
+    prefix="L"
+    required
+  />
+
+  <div class="grid-2">
+    <InputField id="profit" label="Ganancia" value={100} step={0.1} min={0} max={1000} suffix="%" required />
+    <InputField id="iva" label="IVA" value={15} step={0.1} min={0} max={100} suffix="%" />
+  </div>
+
+  <div class="grid-2">
+    <InputField id="bankFee" label="Comisión bancaria" value={4.5} step={0.01} min={0} max={100} suffix="%" />
+    <InputField id="marketing" label="Publicidad" value={10} step={0.1} min={0} max={100} suffix="%" />
+  </div>
+
+  <div class="grid-2">
+    <InputField id="otherCosts" label="Otros costos" value={0} step={0.1} min={0} max={100} suffix="%" />
+    <InputField id="wholesaleDiscount" label="Dcto. mayorista" value={30} step={0.1} min={0} max={100} suffix="%" />
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-ghost" onclick="resetForm()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 4v6h6"></path>
+        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+      </svg>
+      Limpiar
+    </button>
+  </div>
+</Card>
+
+<style>
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .btn {
+    flex: 1;
+    font-family: "Manrope", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 13px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--cfv-neutral);
+    border: 1px solid rgba(173, 181, 189, 0.3);
+  }
+
+  .btn-ghost:hover {
+    color: var(--cfv-accent);
+    border-color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .btn-ghost {
+    background: #f8fafc;
+    color: var(--cfv-row-text);
+    border: 1.5px solid var(--cfv-border);
+  }
+
+  :global([data-theme="light"]) .btn-ghost:hover {
+    color: var(--cfv-primary);
+    border-color: var(--cfv-primary);
+    background: rgba(0, 119, 182, 0.05);
+  }
+</style>
