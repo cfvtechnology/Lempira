@@ -37,7 +37,7 @@ function calculate() {
   const bankPct = getVal("bankFee");
   const mktPct = getVal("marketing");
   const otherPct = getVal("otherCosts");
-  const wholesaleDiscPct = getVal("wholesaleDiscount");
+  const wholesaleDiscPct = wholesaleEnabled ? getVal("wholesaleDiscount") : 0;
 
   // Product name
   const productName = (document.getElementById("productName") as HTMLInputElement).value.trim();
@@ -143,6 +143,25 @@ function calculate() {
     .classList.toggle("warning", wholesaleHealth.warning);
 }
 
+// ──────────────────────────────────────────────────────────────
+// Wholesale toggle
+// ──────────────────────────────────────────────────────────────
+
+let wholesaleEnabled = false;
+
+function toggleWholesale() {
+  wholesaleEnabled = !wholesaleEnabled;
+
+  const switchEl = document.getElementById("wholesaleToggleSwitch")!;
+  const fieldEl = document.getElementById("wholesaleField")!;
+
+  switchEl.classList.toggle("active", wholesaleEnabled);
+  switchEl.setAttribute("aria-checked", String(wholesaleEnabled));
+  fieldEl.classList.toggle("open", wholesaleEnabled);
+
+  calculate();
+}
+
 function resetForm() {
   (document.getElementById("productName") as HTMLInputElement).value = "";
   (document.getElementById("cost") as HTMLInputElement).value = "";
@@ -152,6 +171,15 @@ function resetForm() {
   (document.getElementById("marketing") as HTMLInputElement).value = "10";
   (document.getElementById("otherCosts") as HTMLInputElement).value = "0";
   (document.getElementById("wholesaleDiscount") as HTMLInputElement).value = "30";
+
+  // Reset toggle a OFF
+  wholesaleEnabled = false;
+  const switchEl = document.getElementById("wholesaleToggleSwitch")!;
+  const fieldEl = document.getElementById("wholesaleField")!;
+  switchEl.classList.remove("active");
+  switchEl.setAttribute("aria-checked", "false");
+  fieldEl.classList.remove("open");
+
   calculate();
   (document.getElementById("cost") as HTMLInputElement).focus();
 }
@@ -287,6 +315,7 @@ Object.assign(window, {
   copyPrice,
   shareLempira,
   shareVia,
+  toggleWholesale,
 });
 
 // Initial calculation

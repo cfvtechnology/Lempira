@@ -58,3 +58,4 @@ Profit 100%, IVA 15%, bank fee (comisión bancaria) 4.5%, marketing 10%, other c
 - **Theming**: Dark/light via `data-theme` attribute on `<body>`, CSS custom properties `--cfv-*`, persisted in `localStorage` key `cfv-theme`
 - **No framework JS**: Calculator is vanilla TypeScript, no React/Vue/Svelte needed
 - **SEO**: Layout handles all meta tags via props (`title`, `description`, `canonical`, `ogImage`)
+- **Components are MANDATORY**: Every UI element MUST be an Astro component in `src/components/`. Never hardcode UI (toggles, buttons, inputs, tooltips) inline inside other components. If it doesn't exist as a component, create it first. Existing components: `InputField`, `Card`, `ToggleSwitch`, `Tooltip`, `BreakdownRow`, `MarginIndicator`, `ShareButton`

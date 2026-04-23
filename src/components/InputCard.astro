@@ -1,6 +1,8 @@
 ---
 import Card from "./Card.astro";
 import InputField from "./InputField.astro";
+import Tooltip from "./Tooltip.astro";
+import ToggleSwitch from "./ToggleSwitch.astro";
 ---
 
 <Card title="Datos del producto" badge="Datos">
@@ -32,9 +34,26 @@ import InputField from "./InputField.astro";
     <InputField id="marketing" label="Publicidad" value={10} step={0.1} min={0} max={100} suffix="%" />
   </div>
 
-  <div class="grid-2">
+  <div class="grid-1">
     <InputField id="otherCosts" label="Otros costos" value={0} step={0.1} min={0} max={100} suffix="%" />
-    <InputField id="wholesaleDiscount" label="Dcto. mayorista" value={30} step={0.1} min={0} max={100} suffix="%" />
+  </div>
+
+  <!-- Toggle mayorista -->
+  <ToggleSwitch
+    id="wholesaleToggleSwitch"
+    label="Precio mayorista"
+    subtitle="Calculá un precio con descuento"
+    onclick="toggleWholesale()"
+  />
+
+  <!-- Campo de descuento (colapsable) -->
+  <div class="wholesale-field" id="wholesaleField">
+    <div class="wholesale-field-inner">
+      <div class="wholesale-input-row">
+        <InputField id="wholesaleDiscount" label="Descuento mayorista" value={30} step={0.1} min={0} max={100} suffix="%" hideLabel />
+        <Tooltip text="Se aplica sobre la ganancia,<br/>no sobre el costo base." position="top" />
+      </div>
+    </div>
   </div>
 
   <div class="actions">
@@ -53,6 +72,42 @@ import InputField from "./InputField.astro";
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
+  }
+
+  .grid-1 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  /* Campo colapsable */
+  .wholesale-field {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease, overflow 0s 0.3s;
+    overflow: hidden;
+  }
+
+  .wholesale-field.open {
+    grid-template-rows: 1fr;
+    overflow: visible;
+    transition: grid-template-rows 0.3s ease, overflow 0s 0s;
+  }
+
+  .wholesale-field-inner {
+    min-height: 0;
+    padding-top: 4px;
+  }
+
+  /* Fila interna: input + tooltip en línea */
+  .wholesale-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .wholesale-input-row :global(.field-group) {
+    flex: 1;
+    margin-bottom: 0;
   }
 
   .actions {

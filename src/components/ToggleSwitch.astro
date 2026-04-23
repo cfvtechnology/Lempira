@@ -1,0 +1,120 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  subtitle?: string;
+  onclick: string;
+  checked?: boolean;
+}
+
+const {
+  id,
+  label,
+  subtitle,
+  onclick,
+  checked = false,
+} = Astro.props;
+---
+
+<div class="toggle-row" onclick={onclick}>
+  <div class="toggle-info">
+    <span class="toggle-label">{label}</span>
+    {subtitle && <span class="toggle-sub">{subtitle}</span>}
+  </div>
+  <div
+    class:list={["toggle-switch", { active: checked }]}
+    id={id}
+    role="switch"
+    aria-checked={checked ? "true" : "false"}
+    aria-label={label}
+  >
+    <div class="toggle-thumb"></div>
+  </div>
+</div>
+
+<style>
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(72, 202, 228, 0.04);
+    border: 1px solid rgba(72, 202, 228, 0.12);
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    user-select: none;
+  }
+
+  .toggle-row:hover {
+    background: rgba(72, 202, 228, 0.08);
+    border-color: rgba(72, 202, 228, 0.25);
+  }
+
+  :global([data-theme="light"]) .toggle-row {
+    background: var(--cfv-surface);
+    border-color: var(--cfv-border-subtle);
+  }
+
+  :global([data-theme="light"]) .toggle-row:hover {
+    background: rgba(0, 119, 182, 0.04);
+    border-color: var(--cfv-border);
+  }
+
+  .toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .toggle-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cfv-text);
+    letter-spacing: 0.2px;
+  }
+
+  .toggle-sub {
+    font-size: 11px;
+    color: var(--cfv-neutral);
+    letter-spacing: 0.2px;
+  }
+
+  /* Switch pill */
+  .toggle-switch {
+    width: 40px;
+    height: 22px;
+    border-radius: 999px;
+    background: rgba(173, 181, 189, 0.25);
+    border: 1px solid rgba(173, 181, 189, 0.3);
+    position: relative;
+    transition: background 0.25s ease, border-color 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch.active {
+    background: var(--cfv-accent);
+    border-color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .toggle-switch.active {
+    background: var(--cfv-primary);
+    border-color: var(--cfv-primary);
+  }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--cfv-text);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease;
+  }
+
+  .toggle-switch.active .toggle-thumb {
+    transform: translateX(18px);
+  }
+</style>

@@ -12,6 +12,7 @@ interface Props {
   required?: boolean;
   optional?: boolean;
   placeholder?: string;
+  hideLabel?: boolean;
 }
 
 const {
@@ -27,15 +28,18 @@ const {
   required = false,
   optional = false,
   placeholder,
+  hideLabel = false,
 } = Astro.props;
 ---
 
 <div class="field-group">
-  <label class="field-label" for={id}>
-    {label}
-    {required && <span class="req">*</span>}
-    {optional && <span class="optional">&mdash; opcional</span>}
-  </label>
+  {!hideLabel && (
+    <label class="field-label" for={id}>
+      {label}
+      {required && <span class="req">*</span>}
+      {optional && <span class="optional">&mdash; opcional</span>}
+    </label>
+  )}
   <div class="input-wrap">
     {prefix && <span class="input-prefix">{prefix}</span>}
     <input

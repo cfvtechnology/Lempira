@@ -1,0 +1,134 @@
+---
+interface Props {
+  text: string;
+  position?: "top" | "bottom";
+  ariaLabel?: string;
+  id?: string;
+  hidden?: boolean;
+}
+
+const { text, position = "top", ariaLabel, id, hidden = false } = Astro.props;
+
+// Fallback aria-label: strip HTML tags from text
+const computedAriaLabel = ariaLabel ?? text.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+---
+
+<span
+  class="tooltip-wrap"
+  data-position={position}
+  aria-label={computedAriaLabel}
+  id={id}
+  style={hidden ? "display: none" : undefined}
+>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="8" x2="12" y2="12"></line>
+    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+  </svg>
+  <span class="tooltip" role="tooltip" set:html={text}></span>
+</span>
+
+<style>
+  .tooltip-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: help;
+    flex-shrink: 0;
+  }
+
+  .tooltip-wrap svg {
+    width: 20px;
+    height: 20px;
+    color: var(--cfv-neutral);
+    opacity: 0.6;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .tooltip-wrap:hover svg {
+    opacity: 1;
+    color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .tooltip-wrap:hover svg {
+    color: var(--cfv-primary);
+  }
+
+  .tooltip {
+    position: absolute;
+    left: 50%;
+    background: var(--cfv-surface);
+    border: 1px solid rgba(72, 202, 228, 0.2);
+    color: var(--cfv-text);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  /* Posición top (default): tooltip arriba, flecha apunta hacia abajo */
+  .tooltip-wrap[data-position="top"] .tooltip {
+    bottom: calc(100% + 8px);
+    transform: translateX(-50%) translateY(4px);
+  }
+
+  .tooltip-wrap[data-position="top"] .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(72, 202, 228, 0.2);
+  }
+
+  .tooltip-wrap[data-position="top"]:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Posición bottom: tooltip abajo, flecha apunta hacia arriba */
+  .tooltip-wrap[data-position="bottom"] .tooltip {
+    top: calc(100% + 8px);
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  .tooltip-wrap[data-position="bottom"] .tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-bottom-color: rgba(72, 202, 228, 0.2);
+  }
+
+  .tooltip-wrap[data-position="bottom"]:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Light theme overrides */
+  :global([data-theme="light"]) .tooltip {
+    background: #ffffff;
+    border-color: var(--cfv-border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  :global([data-theme="light"]) .tooltip-wrap[data-position="top"] .tooltip::after {
+    border-top-color: var(--cfv-border);
+  }
+
+  :global([data-theme="light"]) .tooltip-wrap[data-position="bottom"] .tooltip::after {
+    border-bottom-color: var(--cfv-border);
+  }
+</style>
