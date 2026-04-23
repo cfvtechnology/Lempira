@@ -58,7 +58,7 @@ const computedAriaLabel = ariaLabel ?? text.replace(/<[^>]*>/g, " ").replace(/\s
     position: absolute;
     left: 50%;
     background: var(--cfv-surface);
-    border: 1px solid rgba(72, 202, 228, 0.2);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.2);
     color: var(--cfv-text);
     font-size: 11px;
     font-weight: 500;
@@ -88,7 +88,7 @@ const computedAriaLabel = ariaLabel ?? text.replace(/<[^>]*>/g, " ").replace(/\s
     left: 50%;
     transform: translateX(-50%);
     border: 5px solid transparent;
-    border-top-color: rgba(72, 202, 228, 0.2);
+    border-top-color: rgba(var(--cfv-accent-rgb), 0.2);
   }
 
   .tooltip-wrap[data-position="top"]:hover .tooltip {
@@ -109,7 +109,7 @@ const computedAriaLabel = ariaLabel ?? text.replace(/<[^>]*>/g, " ").replace(/\s
     left: 50%;
     transform: translateX(-50%);
     border: 5px solid transparent;
-    border-bottom-color: rgba(72, 202, 228, 0.2);
+    border-bottom-color: rgba(var(--cfv-accent-rgb), 0.2);
   }
 
   .tooltip-wrap[data-position="bottom"]:hover .tooltip {
@@ -119,7 +119,7 @@ const computedAriaLabel = ariaLabel ?? text.replace(/<[^>]*>/g, " ").replace(/\s
 
   /* Light theme overrides */
   :global([data-theme="light"]) .tooltip {
-    background: #ffffff;
+    background: var(--cfv-bg);
     border-color: var(--cfv-border);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   }

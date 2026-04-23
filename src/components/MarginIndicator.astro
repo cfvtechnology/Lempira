@@ -28,31 +28,31 @@ const {
   .margin-indicator {
     margin-top: 16px;
     padding: 14px 16px;
-    background: rgba(72, 202, 228, 0.06);
-    border: 1px solid rgba(72, 202, 228, 0.2);
+    background: rgba(var(--cfv-accent-rgb), 0.06);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.2);
     border-radius: 10px;
   }
 
   :global([data-theme="light"]) .margin-indicator {
-    background: rgba(0, 119, 182, 0.05);
+    background: rgba(var(--cfv-accent-rgb), 0.05);
     border-color: var(--cfv-border);
   }
 
   .margin-indicator:global(.warning) {
-    background: rgba(239, 107, 107, 0.06);
-    border-color: rgba(239, 107, 107, 0.25);
+    background: rgba(var(--cfv-error-rgb), 0.06);
+    border-color: rgba(var(--cfv-error-rgb), 0.25);
   }
 
   .margin-indicator:global(.warning) .margin-top-label {
-    color: #ef6b6b;
+    color: var(--cfv-error);
   }
 
   :global([data-theme="light"]) .margin-indicator:global(.warning) .margin-top-label {
-    color: #dc2626;
+    color: var(--cfv-error);
   }
 
   .margin-indicator:global(.warning) .margin-fill {
-    background: #ef6b6b;
+    background: var(--cfv-error);
   }
 
   .margin-top {
@@ -82,7 +82,7 @@ const {
 
   .margin-bar {
     height: 4px;
-    background: rgba(72, 202, 228, 0.1);
+    background: rgba(var(--cfv-accent-rgb), 0.1);
     border-radius: 2px;
     overflow: hidden;
   }

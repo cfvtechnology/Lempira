@@ -110,8 +110,8 @@ const {
 
   .field {
     width: 100%;
-    background: rgba(13, 27, 42, 0.4);
-    border: 1px solid rgba(72, 202, 228, 0.15);
+    background: rgba(var(--cfv-surface-rgb), 0.4);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.15);
     border-radius: 10px;
     padding: 12px 14px;
     color: var(--cfv-text);
@@ -123,7 +123,7 @@ const {
   }
 
   :global([data-theme="light"]) .field {
-    background: #f8fafc;
+    background: var(--cfv-surface);
     border: 1.5px solid var(--cfv-border);
   }
 
@@ -136,22 +136,22 @@ const {
 
   .field:focus {
     border-color: var(--cfv-accent);
-    background: rgba(72, 202, 228, 0.06);
-    box-shadow: 0 0 0 3px rgba(72, 202, 228, 0.12);
+    background: rgba(var(--cfv-accent-rgb), 0.06);
+    box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.12);
   }
 
   :global([data-theme="light"]) .field:focus {
-    background: #ffffff;
+    background: var(--cfv-bg);
     border-color: var(--cfv-primary);
-    box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.12);
+    box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.12);
   }
 
   .field:hover:not(:focus) {
-    border-color: rgba(72, 202, 228, 0.3);
+    border-color: rgba(var(--cfv-accent-rgb), 0.3);
   }
 
   :global([data-theme="light"]) .field:hover:not(:focus) {
-    background: #ffffff;
+    background: var(--cfv-bg);
     border-color: var(--cfv-border-strong);
   }
 

@@ -8,26 +8,64 @@
 /* Theme variables */
 :root {
   --cfv-bg: #012a4a;
+  --cfv-bg-rgb: 1, 42, 74;
   --cfv-surface: #0d1b2a;
+  --cfv-surface-rgb: 13, 27, 42;
   --cfv-primary: #0077b6;
+  --cfv-primary-rgb: 0, 119, 182;
   --cfv-secondary: #0096c7;
+  --cfv-secondary-rgb: 0, 150, 199;
   --cfv-accent: #48cae4;
+  --cfv-accent-rgb: 72, 202, 228;
   --cfv-neutral: #adb5bd;
+  --cfv-neutral-rgb: 173, 181, 189;
   --cfv-text: #ffffff;
+  --cfv-text-rgb: 255, 255, 255;
+  --cfv-border: rgba(72, 202, 228, 0.2);
+  --cfv-border-rgb: 72, 202, 228;
+  --cfv-border-strong: rgba(72, 202, 228, 0.3);
+  --cfv-border-subtle: rgba(72, 202, 228, 0.12);
+  --cfv-row-text: #adb5bd;
+  --cfv-row-text-rgb: 173, 181, 189;
+
+  /* Semantic tokens */
+  --cfv-error: #ef6b6b;
+  --cfv-error-rgb: 239, 107, 107;
+  --cfv-success: #48cae4;
+  --cfv-success-rgb: 72, 202, 228;
+  --cfv-divider: rgba(72, 202, 228, 0.12);
 }
 
 [data-theme="light"] {
   --cfv-bg: #ffffff;
+  --cfv-bg-rgb: 255, 255, 255;
   --cfv-surface: #f8fafc;
+  --cfv-surface-rgb: 248, 250, 252;
   --cfv-primary: #0077b6;
+  --cfv-primary-rgb: 0, 119, 182;
   --cfv-secondary: #0096c7;
+  --cfv-secondary-rgb: 0, 150, 199;
   --cfv-accent: #0077b6;
+  --cfv-accent-rgb: 0, 119, 182;
   --cfv-neutral: #64748b;
-  --cfv-text: #0f172a;
+  --cfv-neutral-rgb: 100, 116, 139;
+  --cfv-text: #012a4a;
+  --cfv-text-rgb: 15, 23, 42;
   --cfv-border: #cbd5e1;
+  --cfv-border-rgb: 203, 213, 225;
   --cfv-border-strong: #d0dae3;
+  --cfv-border-strong-rgb: 208, 218, 227;
   --cfv-border-subtle: #e2e8f0;
+  --cfv-border-subtle-rgb: 226, 232, 240;
   --cfv-row-text: #475569;
+  --cfv-row-text-rgb: 71, 85, 105;
+
+  /* Semantic tokens */
+  --cfv-error: #dc2626;
+  --cfv-error-rgb: 220, 38, 38;
+  --cfv-success: #0077b6;
+  --cfv-success-rgb: 0, 119, 182;
+  --cfv-divider: var(--cfv-border-subtle);
 }
 
 /* Body */
@@ -92,7 +130,7 @@ body {
    ────────────────────────────────────────────────────────── */
 .icon-btn {
   background: transparent;
-  border: 1px solid rgba(72, 202, 228, 0.2);
+  border: 1px solid rgba(var(--cfv-accent-rgb), 0.2);
   color: var(--cfv-accent);
   width: 32px;
   height: 32px;
@@ -110,14 +148,14 @@ body {
 }
 
 .icon-btn:hover {
-  background: rgba(72, 202, 228, 0.1);
+  background: rgba(var(--cfv-accent-rgb), 0.1);
   border-color: var(--cfv-accent);
 }
 
 .icon-btn:focus-visible {
   outline: none;
   border-color: var(--cfv-accent);
-  box-shadow: 0 0 0 3px rgba(72, 202, 228, 0.25);
+  box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.25);
 }
 
 [data-theme="light"] .icon-btn {
@@ -127,13 +165,13 @@ body {
 }
 
 [data-theme="light"] .icon-btn:hover {
-  background: rgba(0, 119, 182, 0.06);
+  background: rgba(var(--cfv-accent-rgb), 0.06);
   border-color: var(--cfv-primary);
 }
 
 [data-theme="light"] .icon-btn:focus-visible {
   border-color: var(--cfv-primary);
-  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.2);
+  box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.2);
 }
 
 /* Scrollbar */
@@ -146,10 +184,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(72, 202, 228, 0.2);
+  background: rgba(var(--cfv-accent-rgb), 0.2);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(72, 202, 228, 0.4);
+  background: rgba(var(--cfv-accent-rgb), 0.4);
 }

@@ -136,7 +136,7 @@ import ToggleSwitch from "./ToggleSwitch.astro";
   .btn-ghost {
     background: transparent;
     color: var(--cfv-neutral);
-    border: 1px solid rgba(173, 181, 189, 0.3);
+    border: 1px solid rgba(var(--cfv-neutral-rgb), 0.3);
   }
 
   .btn-ghost:hover {
@@ -145,7 +145,7 @@ import ToggleSwitch from "./ToggleSwitch.astro";
   }
 
   :global([data-theme="light"]) .btn-ghost {
-    background: #f8fafc;
+    background: var(--cfv-surface);
     color: var(--cfv-row-text);
     border: 1.5px solid var(--cfv-border);
   }
@@ -153,6 +153,6 @@ import ToggleSwitch from "./ToggleSwitch.astro";
   :global([data-theme="light"]) .btn-ghost:hover {
     color: var(--cfv-primary);
     border-color: var(--cfv-primary);
-    background: rgba(0, 119, 182, 0.05);
+    background: rgba(var(--cfv-accent-rgb), 0.05);
   }
 </style>

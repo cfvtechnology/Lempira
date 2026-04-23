@@ -43,7 +43,7 @@ const {
     align-items: center;
     padding: 10px 0;
     font-size: 13px;
-    border-bottom: 1px solid rgba(72, 202, 228, 0.06);
+    border-bottom: 1px solid rgba(var(--cfv-accent-rgb), 0.06);
   }
 
   :global([data-theme="light"]) .row {
@@ -57,8 +57,8 @@ const {
   .row.subtotal {
     padding: 12px 0;
     margin-top: 4px;
-    border-top: 1px solid rgba(72, 202, 228, 0.12);
-    border-bottom: 1px solid rgba(72, 202, 228, 0.12);
+    border-top: 1px solid rgba(var(--cfv-accent-rgb), 0.12);
+    border-bottom: 1px solid rgba(var(--cfv-accent-rgb), 0.12);
   }
 
   :global([data-theme="light"]) .row.subtotal {
@@ -98,7 +98,7 @@ const {
     background: var(--cfv-accent);
   }
   .marker.sub {
-    background: #ef6b6b;
+    background: var(--cfv-error);
   }
   .marker.neutral {
     background: var(--cfv-neutral);
@@ -109,7 +109,7 @@ const {
     background: var(--cfv-primary);
   }
   :global([data-theme="light"]) .marker.sub {
-    background: #dc2626;
+    background: var(--cfv-error);
   }
 
   .row-value {
@@ -132,7 +132,7 @@ const {
   }
 
   .row-value.negative-color {
-    color: #ef6b6b;
+    color: var(--cfv-error);
   }
 
   .row-pct {

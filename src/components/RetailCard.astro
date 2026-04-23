@@ -65,13 +65,13 @@ import ShareButton from "./ShareButton.astro";
   .product-display {
     margin-bottom: 20px;
     padding: 14px 16px;
-    background: rgba(72, 202, 228, 0.05);
+    background: rgba(var(--cfv-accent-rgb), 0.05);
     border-left: 2px solid var(--cfv-accent);
     border-radius: 0 10px 10px 0;
   }
 
   :global([data-theme="light"]) .product-display {
-    background: rgba(0, 119, 182, 0.05);
+    background: rgba(var(--cfv-accent-rgb), 0.05);
     border-left-color: var(--cfv-primary);
   }
 
@@ -167,11 +167,11 @@ import ShareButton from "./ShareButton.astro";
   }
 
   .meta-value.positive {
-    color: #48cae4;
+    color: var(--cfv-accent);
   }
 
   :global([data-theme="light"]) .meta-value.positive {
-    color: #0077b6;
+    color: var(--cfv-primary);
   }
 
   .actions-group {
@@ -183,7 +183,7 @@ import ShareButton from "./ShareButton.astro";
   .breakdown {
     margin-top: 24px;
     padding-top: 20px;
-    border-top: 1px dashed rgba(72, 202, 228, 0.15);
+    border-top: 1px dashed rgba(var(--cfv-accent-rgb), 0.15);
   }
 
   :global([data-theme="light"]) .breakdown {
