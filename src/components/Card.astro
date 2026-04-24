@@ -5,6 +5,7 @@ interface Props {
   id?: string;
   animationDelay?: string;
   hidden?: boolean;
+  as?: "article" | "section" | "div";
 }
 
 const {
@@ -13,7 +14,8 @@ const {
   id,
   animationDelay,
   hidden = false,
-} = Astro.props;
+  as: Tag = "article",
+}: Props = Astro.props;
 
 const style = [
   animationDelay ? `animation-delay: ${animationDelay}; opacity: 0` : "",
@@ -21,17 +23,17 @@ const style = [
 ].filter(Boolean).join("; ");
 ---
 
-<div
+<Tag
   class:list={["card", { "animate-in": animationDelay }]}
   id={id}
   style={style || undefined}
 >
   <div class="card-header">
-    <span class="card-title">{title}</span>
+    <h2 class="card-title">{title}</h2>
     <span class="card-badge">{badge}</span>
   </div>
   <slot />
-</div>
+</Tag>
 
 <style>
   .card {
@@ -71,6 +73,8 @@ const style = [
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.3px;
+    margin: 0;
+    line-height: 1.2;
   }
 
   .card-badge {

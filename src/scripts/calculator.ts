@@ -1,7 +1,9 @@
 function setTheme(theme: string) {
   document.body.dataset.theme = theme;
   document.querySelectorAll<HTMLButtonElement>("[data-theme-btn]").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.themeBtn === theme);
+    const isActive = btn.dataset.themeBtn === theme;
+    btn.classList.toggle("active", isActive);
+    btn.setAttribute("aria-pressed", String(isActive));
   });
   localStorage.setItem("cfv-theme", theme);
 }
@@ -15,6 +17,19 @@ function format(n: number): string {
 
 function formatL(n: number): string {
   return "L " + format(n);
+}
+
+let hasInitializedAnnouncements = false;
+let announcementTimer: number | undefined;
+
+function announceCalculation(message: string) {
+  const liveRegion = document.getElementById("calculatorLiveRegion");
+  if (!liveRegion) return;
+
+  if (announcementTimer) window.clearTimeout(announcementTimer);
+  announcementTimer = window.setTimeout(() => {
+    liveRegion.textContent = message;
+  }, 300);
 }
 
 function getVal(id: string): number {
@@ -37,7 +52,8 @@ function calculate() {
   const bankPct = getVal("bankFee");
   const mktPct = getVal("marketing");
   const otherPct = getVal("otherCosts");
-  const wholesaleDiscPct = wholesaleEnabled ? getVal("wholesaleDiscount") : 0;
+  // Always compute with the input value so the locked preview shows real numbers.
+  const wholesaleDiscPct = getVal("wholesaleDiscount");
 
   // Product name
   const productName = (document.getElementById("productName") as HTMLInputElement).value.trim();
@@ -85,19 +101,19 @@ function calculate() {
   const health = getMarginHealth(netMargin);
   document.getElementById("marginHealthValue")!.textContent =
     health.label + " · " + netMargin.toFixed(1) + "%";
-  document.getElementById("marginFill")!.style.width =
-    Math.max(0, Math.min(100, netMargin * 2)) + "%";
+  const retailFillWidth = Math.max(0, Math.min(100, netMargin * 2));
+  document.getElementById("marginFill")!.style.width = retailFillWidth + "%";
+  document.getElementById("marginFill-bar")!.setAttribute("aria-valuenow", String(Math.round(retailFillWidth)));
+  document.getElementById("marginFill-bar")!.setAttribute("aria-valuetext", `${health.label} · ${netMargin.toFixed(1)}%`);
   document
     .getElementById("retailMarginIndicator")!
     .classList.toggle("warning", health.warning);
 
-  // WHOLESALE
-  const wholesaleCard = document.getElementById("wholesaleCard")!;
-  if (wholesaleDiscPct <= 0) {
-    wholesaleCard.style.display = "none";
-    return;
-  }
-  wholesaleCard.style.display = "";
+  // WHOLESALE — always compute so the locked preview shows real numbers.
+  const wholesaleWrap = document.getElementById("wholesaleWrap")!;
+  const wholesaleContent = document.getElementById("wholesaleContent")!;
+  wholesaleWrap.classList.toggle("locked", !wholesaleEnabled);
+  wholesaleContent.setAttribute("aria-hidden", String(!wholesaleEnabled));
 
   const wholesaleDiscount = (profit * wholesaleDiscPct) / 100;
   const wholesaleSub = subtotal - wholesaleDiscount;
@@ -134,13 +150,28 @@ function calculate() {
     wholesaleHealth.label + " · " + wholesaleMarginPct.toFixed(1) + "%";
   const wholesaleFillWidth = Math.max(
     0,
-    Math.min(100, Math.abs(wholesaleMarginPct) * 2),
+    Math.min(100, wholesaleMarginPct * 2),
   );
   document.getElementById("wholesaleMarginFill")!.style.width =
     wholesaleFillWidth + "%";
+  document.getElementById("wholesaleMarginFill-bar")!.setAttribute("aria-valuenow", String(Math.round(wholesaleFillWidth)));
+  document.getElementById("wholesaleMarginFill-bar")!.setAttribute(
+    "aria-valuetext",
+    `${wholesaleHealth.label} · ${wholesaleMarginPct.toFixed(1)}%`,
+  );
   document
     .getElementById("wholesaleMarginIndicator")!
     .classList.toggle("warning", wholesaleHealth.warning);
+
+  if (hasInitializedAnnouncements) {
+    const retailMsg = `Precio al detalle ${formatL(finalPrice)}. Ganancia por unidad ${formatL(netProfit)}. Margen real ${netMargin.toFixed(1)}%.`;
+    const wholesaleMsg = wholesaleEnabled
+      ? ` Precio mayorista ${formatL(wholesaleFinal)}. Ganancia por unidad ${formatL(wholesaleNet)}. Margen mayorista ${wholesaleMarginPct.toFixed(1)}%.`
+      : "";
+    announceCalculation(retailMsg + wholesaleMsg);
+  } else {
+    hasInitializedAnnouncements = true;
+  }
 }
 
 // ──────────────────────────────────────────────────────────────
@@ -153,10 +184,11 @@ function toggleWholesale() {
   wholesaleEnabled = !wholesaleEnabled;
 
   const switchEl = document.getElementById("wholesaleToggleSwitch")!;
+  const toggleBtn = switchEl.closest('button[role="switch"]') ?? switchEl.parentElement!;
   const fieldEl = document.getElementById("wholesaleField")!;
 
   switchEl.classList.toggle("active", wholesaleEnabled);
-  switchEl.setAttribute("aria-checked", String(wholesaleEnabled));
+  toggleBtn.setAttribute("aria-checked", String(wholesaleEnabled));
   fieldEl.classList.toggle("open", wholesaleEnabled);
 
   calculate();
@@ -175,9 +207,10 @@ function resetForm() {
   // Reset toggle a OFF
   wholesaleEnabled = false;
   const switchEl = document.getElementById("wholesaleToggleSwitch")!;
+  const toggleBtn = switchEl.closest('button[role="switch"]') ?? switchEl.parentElement!;
   const fieldEl = document.getElementById("wholesaleField")!;
   switchEl.classList.remove("active");
-  switchEl.setAttribute("aria-checked", "false");
+  toggleBtn.setAttribute("aria-checked", "false");
   fieldEl.classList.remove("open");
 
   calculate();
@@ -196,9 +229,10 @@ function copyPrice(type: string) {
   }
 
   const text = "L " + value;
-  navigator.clipboard.writeText(text).catch(() => {});
-
-  showToast(label + " copiado: " + text);
+  navigator.clipboard
+    .writeText(text)
+    .then(() => showToast(label + " copiado: " + text))
+    .catch(() => showToast("No se pudo copiar el precio"));
 }
 
 function showToast(message: string) {

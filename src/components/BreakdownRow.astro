@@ -23,20 +23,28 @@ const {
 ---
 
 <div class:list={["row", { subtotal: isSubtotal }]}>
-  <span class="row-label">
+  <dt class="row-label">
     {markerType && <span class:list={["marker", markerType]} />}
     {label}
     {pctId && <span id={pctId} class="row-pct">({defaultPct})</span>}
-  </span>
-  <span
+  </dt>
+  <dd
     class:list={["row-value", { highlighted, "negative-color": negativeColor }]}
     id={valueId}
   >
     L 0.00
-  </span>
+  </dd>
 </div>
 
 <style>
+  dt {
+    font-weight: inherit;
+  }
+
+  dd {
+    margin: 0;
+  }
+
   .row {
     display: flex;
     justify-content: space-between;

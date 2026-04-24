@@ -51,6 +51,8 @@ const {
       min={min}
       max={max}
       placeholder={placeholder}
+      required={required || undefined}
+      aria-required={required ? "true" : undefined}
       oninput="calculate()"
     />
     {suffix && <span class="input-suffix">{suffix}</span>}

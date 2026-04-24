@@ -11,6 +11,8 @@
   --cfv-bg-rgb: 1, 42, 74;
   --cfv-surface: #0d1b2a;
   --cfv-surface-rgb: 13, 27, 42;
+  --cfv-surface-2: #0a1929;
+  --cfv-surface-2-rgb: 10, 25, 41;
   --cfv-primary: #0077b6;
   --cfv-primary-rgb: 0, 119, 182;
   --cfv-secondary: #0096c7;
@@ -21,6 +23,8 @@
   --cfv-neutral-rgb: 173, 181, 189;
   --cfv-text: #ffffff;
   --cfv-text-rgb: 255, 255, 255;
+  --cfv-text-muted: #e5eaf0;
+  --cfv-text-muted-rgb: 229, 234, 240;
   --cfv-border: rgba(72, 202, 228, 0.2);
   --cfv-border-rgb: 72, 202, 228;
   --cfv-border-strong: rgba(72, 202, 228, 0.3);
@@ -33,6 +37,8 @@
   --cfv-error-rgb: 239, 107, 107;
   --cfv-success: #48cae4;
   --cfv-success-rgb: 72, 202, 228;
+  --cfv-warn: #f59e0b;
+  --cfv-warn-rgb: 245, 158, 11;
   --cfv-divider: rgba(72, 202, 228, 0.12);
 }
 
@@ -41,6 +47,8 @@
   --cfv-bg-rgb: 255, 255, 255;
   --cfv-surface: #f8fafc;
   --cfv-surface-rgb: 248, 250, 252;
+  --cfv-surface-2: #f1f5f9;
+  --cfv-surface-2-rgb: 241, 245, 249;
   --cfv-primary: #0077b6;
   --cfv-primary-rgb: 0, 119, 182;
   --cfv-secondary: #0096c7;
@@ -51,6 +59,8 @@
   --cfv-neutral-rgb: 100, 116, 139;
   --cfv-text: #012a4a;
   --cfv-text-rgb: 15, 23, 42;
+  --cfv-text-muted: #475569;
+  --cfv-text-muted-rgb: 71, 85, 105;
   --cfv-border: #cbd5e1;
   --cfv-border-rgb: 203, 213, 225;
   --cfv-border-strong: #d0dae3;
@@ -65,6 +75,8 @@
   --cfv-error-rgb: 220, 38, 38;
   --cfv-success: #0077b6;
   --cfv-success-rgb: 0, 119, 182;
+  --cfv-warn: #d97706;
+  --cfv-warn-rgb: 217, 119, 6;
   --cfv-divider: var(--cfv-border-subtle);
 }
 
@@ -79,6 +91,31 @@ body {
   transition:
     background 0.4s ease,
     color 0.4s ease;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 1000;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: var(--cfv-accent);
+  color: var(--cfv-bg);
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(var(--cfv-accent-rgb), 0.25);
+}
+
+[data-theme="light"] .skip-link {
+  background: var(--cfv-primary);
+  color: #ffffff;
+}
+
+.skip-link:focus {
+  top: 16px;
 }
 
 /* Container */
