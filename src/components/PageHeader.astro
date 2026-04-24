@@ -12,14 +12,14 @@
     </span>
   </a>
 
-  <div class="theme-toggle">
-    <button class="theme-btn active" data-theme-btn="dark" onclick="setTheme('dark')">
+  <div class="theme-toggle" role="group" aria-label="Tema de color">
+    <button class="theme-btn active" data-theme-btn="dark" onclick="setTheme('dark')" aria-pressed="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
       </svg>
       Oscuro
     </button>
-    <button class="theme-btn" data-theme-btn="light" onclick="setTheme('light')">
+    <button class="theme-btn" data-theme-btn="light" onclick="setTheme('light')" aria-pressed="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"></circle>
         <line x1="12" y1="1" x2="12" y2="3"></line>

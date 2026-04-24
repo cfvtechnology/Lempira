@@ -19,19 +19,18 @@ import "../styles/global.css";
 
   <div class="container">
     <PageHeader />
-    <PageTitle />
+    <main>
+      <PageTitle />
 
-    <div class="layout">
-      <InputCard />
+      <section class="layout" aria-label="Calculadora de precios">
+        <InputCard />
 
-      <div>
         <div class="results">
           <RetailCard />
           <WholesaleCard />
         </div>
-      </div>
-    </div>
-
+      </section>
+    </main>
     <PageFooter />
   </div>
 

@@ -17,7 +17,7 @@ import ShareButton from "./ShareButton.astro";
         <div class="result-label">Precio final</div>
         <div class="result-price accent">
           <span class="currency">L</span>
-          <span id="finalPrice">0.00</span>
+          <output id="finalPrice" aria-live="polite">0.00</output>
         </div>
       </div>
       <div class="actions-group">
@@ -31,16 +31,16 @@ import ShareButton from "./ShareButton.astro";
       </div>
     </div>
 
-    <div class="result-meta">
+    <dl class="result-meta">
       <div class="meta-item">
-        <span class="meta-label">Ganancia neta</span>
-        <span class="meta-value positive" id="netProfit">L 0.00</span>
+        <dt class="meta-label">Ganancia neta</dt>
+        <dd class="meta-value positive" id="netProfit">L 0.00</dd>
       </div>
       <div class="meta-item">
-        <span class="meta-label">Margen real</span>
-        <span class="meta-value positive" id="netMargin">0.0%</span>
+        <dt class="meta-label">Margen real</dt>
+        <dd class="meta-value positive" id="netMargin">0.0%</dd>
       </div>
-    </div>
+    </dl>
   </div>
 
   <MarginIndicator
@@ -50,7 +50,7 @@ import ShareButton from "./ShareButton.astro";
     defaultLabel="Óptimo"
   />
 
-  <div class="breakdown">
+  <dl class="breakdown">
     <BreakdownRow label="Costo base" valueId="br-cost" markerType="neutral" />
     <BreakdownRow label="Ganancia" valueId="br-profit" markerType="add" pctId="br-profit-pct" defaultPct="100%" highlighted />
     <BreakdownRow label="Publicidad" valueId="br-mkt" markerType="add" pctId="br-mkt-pct" defaultPct="10%" />
@@ -58,7 +58,7 @@ import ShareButton from "./ShareButton.astro";
     <BreakdownRow label="Subtotal" valueId="br-subtotal" isSubtotal />
     <BreakdownRow label="IVA" valueId="br-iva" markerType="add" pctId="br-iva-pct" defaultPct="15%" />
     <BreakdownRow label="Comisión banco" valueId="br-fee" markerType="add" pctId="br-fee-pct" defaultPct="4.5%" />
-  </div>
+  </dl>
 </Card>
 
 <style>
@@ -142,8 +142,14 @@ import ShareButton from "./ShareButton.astro";
   .result-meta {
     display: flex;
     gap: 16px;
+    margin: 0;
     margin-top: 12px;
+    padding: 0;
     flex-wrap: wrap;
+  }
+
+  .result-meta .meta-value {
+    margin: 0;
   }
 
   .meta-item {
@@ -181,6 +187,7 @@ import ShareButton from "./ShareButton.astro";
   }
 
   .breakdown {
+    margin: 0;
     margin-top: 24px;
     padding-top: 20px;
     border-top: 1px dashed rgba(var(--cfv-accent-rgb), 0.15);

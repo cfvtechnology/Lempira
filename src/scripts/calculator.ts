@@ -1,7 +1,9 @@
 function setTheme(theme: string) {
   document.body.dataset.theme = theme;
   document.querySelectorAll<HTMLButtonElement>("[data-theme-btn]").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.themeBtn === theme);
+    const isActive = btn.dataset.themeBtn === theme;
+    btn.classList.toggle("active", isActive);
+    btn.setAttribute("aria-pressed", String(isActive));
   });
   localStorage.setItem("cfv-theme", theme);
 }
@@ -85,8 +87,9 @@ function calculate() {
   const health = getMarginHealth(netMargin);
   document.getElementById("marginHealthValue")!.textContent =
     health.label + " · " + netMargin.toFixed(1) + "%";
-  document.getElementById("marginFill")!.style.width =
-    Math.max(0, Math.min(100, netMargin * 2)) + "%";
+  const retailFillWidth = Math.max(0, Math.min(100, netMargin * 2));
+  document.getElementById("marginFill")!.style.width = retailFillWidth + "%";
+  document.getElementById("marginFill-bar")!.setAttribute("aria-valuenow", String(Math.round(retailFillWidth)));
   document
     .getElementById("retailMarginIndicator")!
     .classList.toggle("warning", health.warning);
@@ -138,6 +141,7 @@ function calculate() {
   );
   document.getElementById("wholesaleMarginFill")!.style.width =
     wholesaleFillWidth + "%";
+  document.getElementById("wholesaleMarginFill-bar")!.setAttribute("aria-valuenow", String(Math.round(wholesaleFillWidth)));
   document
     .getElementById("wholesaleMarginIndicator")!
     .classList.toggle("warning", wholesaleHealth.warning);
@@ -153,10 +157,11 @@ function toggleWholesale() {
   wholesaleEnabled = !wholesaleEnabled;
 
   const switchEl = document.getElementById("wholesaleToggleSwitch")!;
+  const toggleBtn = switchEl.closest('button[role="switch"]') ?? switchEl.parentElement!;
   const fieldEl = document.getElementById("wholesaleField")!;
 
   switchEl.classList.toggle("active", wholesaleEnabled);
-  switchEl.setAttribute("aria-checked", String(wholesaleEnabled));
+  toggleBtn.setAttribute("aria-checked", String(wholesaleEnabled));
   fieldEl.classList.toggle("open", wholesaleEnabled);
 
   calculate();
@@ -175,9 +180,10 @@ function resetForm() {
   // Reset toggle a OFF
   wholesaleEnabled = false;
   const switchEl = document.getElementById("wholesaleToggleSwitch")!;
+  const toggleBtn = switchEl.closest('button[role="switch"]') ?? switchEl.parentElement!;
   const fieldEl = document.getElementById("wholesaleField")!;
   switchEl.classList.remove("active");
-  switchEl.setAttribute("aria-checked", "false");
+  toggleBtn.setAttribute("aria-checked", "false");
   fieldEl.classList.remove("open");
 
   calculate();
