@@ -7,13 +7,16 @@ import InputCard from "../components/InputCard.astro";
 import RetailCard from "../components/RetailCard.astro";
 import WholesaleCard from "../components/WholesaleCard.astro";
 import CopyToast from "../components/CopyToast.astro";
+import FAQ from "../components/FAQ.astro";
+import { faqData } from "../components/FAQ.astro";
 import PageFooter from "../components/PageFooter.astro";
 import "../styles/global.css";
 ---
 
 <Layout
-  title="Lempira · Calculadora de precios para Honduras"
-  description="Lempira es la calculadora de precios gratis para emprendedores hondureños. Definí costos, márgenes, IVA e impuestos. Obtené tu precio justo al detalle y mayorista en tiempo real, en Lempiras (HNL). Hecha por CFV Technology."
+  title="Calculadora de precios de venta gratis — Lempira | Margen de ganancia, IVA y mayorista"
+  description="Calculá el precio de venta de tu producto gratis. Definí costo, margen de ganancia, IVA, comisión bancaria y descuento mayorista. Obtené tu precio justo al detalle y por mayor en Lempiras (HNL). Herramienta gratuita para emprendedores hondureños."
+  faq={faqData}
 >
   <AppBackground />
 
@@ -30,6 +33,8 @@ import "../styles/global.css";
           <WholesaleCard />
         </div>
       </section>
+
+      <FAQ />
     </main>
     <PageFooter />
   </div>

@@ -1,9 +1,15 @@
 ---
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
 interface Props {
   title: string;
   description: string;
   canonical?: string;
   ogImage?: string;
+  faq?: FAQItem[];
 }
 
 const {
@@ -11,6 +17,7 @@ const {
   description,
   canonical = Astro.url.href,
   ogImage = "/og-image.png",
+  faq = [],
 } = Astro.props;
 
 const siteName = "Lempira";
@@ -29,6 +36,9 @@ const locale = "es_HN";
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={siteName} />
+    <meta name="keywords" content="calculadora de precios, precio de venta, margen de ganancia, calcular precio de un producto, IVA Honduras, precio mayorista, porcentaje de ganancia, emprendedores Honduras, como fijar precios, formula precio de venta, calculadora gratis, Lempiras HNL" />
+    <meta name="geo.region" content="HN" />
+    <meta name="geo.placename" content="Honduras" />
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph / Facebook / WhatsApp -->
@@ -41,7 +51,7 @@ const locale = "es_HN";
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Lempira · Calculadora de precios para Honduras" />
+    <meta property="og:image:alt" content="Lempira · Calculadora gratuita de precios de venta para emprendedores hondureños" />
     <meta property="og:locale" content={locale} />
     <meta property="og:site_name" content={siteName} />
 
@@ -51,7 +61,7 @@ const locale = "es_HN";
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(ogImage, Astro.site).href} />
-    <meta property="twitter:image:alt" content="Lempira · Calculadora de precios para Honduras" />
+    <meta property="twitter:image:alt" content="Lempira · Calculadora gratuita de precios de venta para emprendedores hondureños" />
 
     <!-- JSON-LD Structured Data -->
     <script
@@ -60,15 +70,32 @@ const locale = "es_HN";
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        name: "Lempira - Calculadora de precios",
+        name: "Lempira - Calculadora de precios de venta",
+        alternateName: "Lempira",
         description,
         url: canonical,
         applicationCategory: "BusinessApplication",
+        applicationSubCategory: "Calculadora de precios",
         operatingSystem: "All",
+        browserRequirements: "Requires JavaScript and HTML5 support",
+        featureList: [
+          "Calcular precio de venta de un producto",
+          "Calcular margen de ganancia en porcentaje",
+          "Incluir IVA e impuestos en el precio",
+          "Calcular precio mayorista con descuento",
+          "Calcular comisión bancaria",
+          "Exportar y compartir precios",
+        ],
+        keywords: "calculadora de precios, precio de venta, margen de ganancia, IVA Honduras, precio mayorista, emprendedores Honduras, calcular costo de producto",
         offers: {
           "@type": "Offer",
           price: "0",
           priceCurrency: "HNL",
+          availability: "https://schema.org/InStock",
+        },
+        audience: {
+          "@type": "BusinessAudience",
+          audienceType: "Emprendedores y pequeños negocios en Honduras",
         },
         creator: {
           "@type": "Organization",
@@ -81,8 +108,31 @@ const locale = "es_HN";
           url: "https://cfv.technology",
         },
         inLanguage: "es-HN",
+        isAccessibleForFree: true,
+        countryOfOrigin: {
+          "@type": "Country",
+          name: "Honduras",
+        },
       })}
     />
+    {faq.length > 0 && (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer,
+            },
+          })),
+        })}
+      />
+    )}
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
