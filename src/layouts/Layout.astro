@@ -33,12 +33,9 @@ const locale = "es_HN";
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
-    <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <meta name="author" content={siteName} />
+    <meta name="author" content={publisherName} />
     <meta name="keywords" content="calculadora de precios, precio de venta, margen de ganancia, calcular precio de un producto, IVA Honduras, precio mayorista, porcentaje de ganancia, emprendedores Honduras, como fijar precios, formula precio de venta, calculadora gratis, Lempiras HNL" />
-    <meta name="geo.region" content="HN" />
-    <meta name="geo.placename" content="Honduras" />
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph / Facebook / WhatsApp -->
@@ -56,12 +53,12 @@ const locale = "es_HN";
     <meta property="og:site_name" content={siteName} />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonical} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(ogImage, Astro.site).href} />
-    <meta property="twitter:image:alt" content="Lempira · Calculadora gratuita de precios de venta para emprendedores hondureños" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site).href} />
+    <meta name="twitter:image:alt" content="Lempira · Calculadora gratuita de precios de venta para emprendedores hondureños" />
 
     <!-- JSON-LD Structured Data -->
     <script
@@ -78,14 +75,7 @@ const locale = "es_HN";
         applicationSubCategory: "Calculadora de precios",
         operatingSystem: "All",
         browserRequirements: "Requires JavaScript and HTML5 support",
-        featureList: [
-          "Calcular precio de venta de un producto",
-          "Calcular margen de ganancia en porcentaje",
-          "Incluir IVA e impuestos en el precio",
-          "Calcular precio mayorista con descuento",
-          "Calcular comisión bancaria",
-          "Exportar y compartir precios",
-        ],
+        featureList: "Calcular precio de venta de un producto, calcular margen de ganancia en porcentaje, incluir IVA e impuestos en el precio, calcular precio mayorista con descuento, calcular comisión bancaria y exportar o compartir precios",
         keywords: "calculadora de precios, precio de venta, margen de ganancia, IVA Honduras, precio mayorista, emprendedores Honduras, calcular costo de producto",
         offers: {
           "@type": "Offer",
@@ -148,11 +138,12 @@ const locale = "es_HN";
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/cfv-icon.ico" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <slot name="head" />
   </head>
   <body data-theme="dark">
+    <a href="#main-content" class="skip-link">Saltar al contenido</a>
     <slot />
   </body>
 </html>

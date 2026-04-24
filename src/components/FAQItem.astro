@@ -1,0 +1,543 @@
+---
+import type { FAQBlock } from "../data/faq";
+
+interface Props {
+  id: string;
+  question: string;
+  blocks: FAQBlock[];
+  defaultOpen?: boolean;
+}
+
+const { id, question, blocks, defaultOpen = false } = Astro.props;
+
+const buttonId = `${id}-button`;
+const contentId = `${id}-content`;
+
+/**
+ * Splits an arithmetic expression into tokens with their role so the template
+ * can wrap each one in a span with the correct syntax-highlighting color.
+ */
+type ExprToken = {
+  type: "paren" | "operator" | "number" | "ws" | "var";
+  value: string;
+};
+
+function tokenizeExpression(expression: string): ExprToken[] {
+  const regex = /([()])|([+\-−×÷])|(\d+(?:\.\d+)?%?)|(\s+)|([^()+\-−×÷\s\d]+)/g;
+  const tokens: ExprToken[] = [];
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(expression)) !== null) {
+    const [, paren, op, num, ws, variable] = match;
+    if (paren) tokens.push({ type: "paren", value: paren });
+    else if (op) tokens.push({ type: "operator", value: op });
+    else if (num) tokens.push({ type: "number", value: num });
+    else if (ws) tokens.push({ type: "ws", value: ws });
+    else if (variable) tokens.push({ type: "var", value: variable });
+  }
+  return tokens;
+}
+---
+
+<div class:list={["faq-item", { open: defaultOpen }]} data-faq-item>
+  <h3 class="faq-question-heading">
+    <button
+      id={buttonId}
+      type="button"
+      class="faq-question"
+      aria-expanded={defaultOpen ? "true" : "false"}
+      aria-controls={contentId}
+      data-faq-toggle
+    >
+      <span class="faq-question-text">{question}</span>
+      <span class="faq-toggle" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+    </button>
+  </h3>
+
+  <div
+    id={contentId}
+    class="faq-content"
+    role="region"
+    aria-labelledby={buttonId}
+    aria-hidden={defaultOpen ? "false" : "true"}
+  >
+    <div class="faq-content-inner">
+      {blocks.map((block) => {
+        if (block.type === "formula") {
+          const tokens = tokenizeExpression(block.expression);
+          return (
+            <figure class="faq-formula">
+              <figcaption class="faq-formula-label">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span>{block.label ?? "Fórmula"}</span>
+              </figcaption>
+              <pre class="code-block"><code class="code-line"><span class="code-var-main">{block.result}</span><span class="code-equals"> = </span>{tokens.map((t) => {
+                if (t.type === "ws") return t.value;
+                return <span class={`code-${t.type}`}>{t.value}</span>;
+              })}</code></pre>
+            </figure>
+          );
+        }
+
+        if (block.type === "paragraph") {
+          return (
+            <p class:list={["faq-paragraph", { muted: block.muted }]} set:html={block.html} />
+          );
+        }
+
+        if (block.type === "callout") {
+          return (
+            <div class="faq-callout">
+              <p set:html={block.html} />
+            </div>
+          );
+        }
+
+        if (block.type === "stats") {
+          return (
+            <div class="stats-row" role="list">
+              {block.items.map((stat) => (
+                <div class="stat-card" role="listitem">
+                  <div class="stat-label">{stat.label}</div>
+                  <div class="stat-value">{stat.value}</div>
+                  <div class="stat-desc">{stat.description}</div>
+                </div>
+              ))}
+            </div>
+          );
+        }
+
+        if (block.type === "bullets") {
+          return (
+            <ul class="faq-bullets">
+              {block.items.map((item) => <li set:html={item} />)}
+            </ul>
+          );
+        }
+
+        return null;
+      })}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Card ──────────────────────────────────────────────── */
+  .faq-item {
+    background: rgba(var(--cfv-surface-rgb), 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.18);
+    border-radius: 14px;
+    overflow: hidden;
+    transition:
+      border-color 0.3s ease,
+      background 0.3s ease;
+  }
+
+  :global([data-theme="light"]) .faq-item {
+    background: var(--cfv-bg);
+    border: 1.5px solid var(--cfv-border);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .faq-item:hover {
+    border-color: rgba(var(--cfv-accent-rgb), 0.3);
+  }
+
+  .faq-item.open {
+    border-color: rgba(var(--cfv-accent-rgb), 0.35);
+    background: rgba(var(--cfv-surface-rgb), 0.7);
+  }
+
+  :global([data-theme="light"]) .faq-item.open {
+    border-color: var(--cfv-primary);
+    box-shadow: 0 4px 16px rgba(var(--cfv-accent-rgb), 0.1);
+  }
+
+  /* ── Question heading + button ─────────────────────────── */
+  .faq-question-heading {
+    margin: 0;
+    font-weight: inherit;
+  }
+
+  .faq-question {
+    width: 100%;
+    padding: 20px 24px;
+    background: transparent;
+    border: none;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: background 0.2s ease;
+  }
+
+  .faq-question:hover {
+    background: rgba(var(--cfv-accent-rgb), 0.04);
+  }
+
+  .faq-question:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(var(--cfv-accent-rgb), 0.4);
+  }
+
+  .faq-question-text {
+    color: var(--cfv-accent);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+  }
+
+  :global([data-theme="light"]) .faq-question-text {
+    color: var(--cfv-primary);
+  }
+
+  .faq-toggle {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(var(--cfv-accent-rgb), 0.08);
+    border: 0.5px solid rgba(var(--cfv-accent-rgb), 0.2);
+    color: var(--cfv-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  :global([data-theme="light"]) .faq-toggle {
+    background: rgba(var(--cfv-accent-rgb), 0.06);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.3);
+    color: var(--cfv-primary);
+  }
+
+  .faq-item.open .faq-toggle {
+    background: var(--cfv-accent);
+    color: var(--cfv-bg);
+    transform: rotate(180deg);
+    border-color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .faq-item.open .faq-toggle {
+    background: var(--cfv-primary);
+    color: #ffffff;
+    border-color: var(--cfv-primary);
+  }
+
+  .faq-toggle svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* ── Collapsible content ───────────────────────────────── */
+  .faq-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+  }
+
+  .faq-item.open .faq-content {
+    grid-template-rows: 1fr;
+  }
+
+  .faq-content-inner {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 24px;
+  }
+
+  .faq-item.open .faq-content-inner {
+    padding: 20px 24px 24px;
+    border-top: 0.5px solid rgba(var(--cfv-accent-rgb), 0.12);
+  }
+
+  :global([data-theme="light"]) .faq-item.open .faq-content-inner {
+    border-top-color: var(--cfv-border-subtle);
+  }
+
+  /* ── Formula ───────────────────────────────────────────── */
+  .faq-formula {
+    margin: 0 0 20px;
+  }
+
+  .faq-formula-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: var(--cfv-accent);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  :global([data-theme="light"]) .faq-formula-label {
+    color: var(--cfv-primary);
+  }
+
+  .code-block {
+    background: var(--cfv-surface-2);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.18);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 0;
+    overflow-x: auto;
+  }
+
+  :global([data-theme="light"]) .code-block {
+    background: var(--cfv-surface-2);
+    border: 1.5px solid var(--cfv-border);
+  }
+
+  .code-line {
+    display: block;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: nowrap;
+  }
+
+  .code-var-main {
+    color: var(--cfv-accent);
+    font-weight: 600;
+  }
+
+  :global([data-theme="light"]) .code-var-main {
+    color: var(--cfv-primary);
+  }
+
+  .code-operator {
+    color: var(--cfv-accent);
+  }
+
+  :global([data-theme="light"]) .code-operator {
+    color: var(--cfv-primary);
+  }
+
+  .code-paren,
+  .code-var {
+    color: var(--cfv-text);
+  }
+
+  .code-number {
+    color: var(--cfv-warn);
+  }
+
+  .code-equals {
+    color: var(--cfv-neutral);
+  }
+
+  /* ── Paragraphs ────────────────────────────────────────── */
+  .faq-paragraph {
+    color: var(--cfv-text-muted);
+    font-size: 14px;
+    line-height: 1.75;
+    margin: 0 0 14px;
+    font-weight: 400;
+  }
+
+  .faq-paragraph.muted {
+    color: var(--cfv-neutral);
+  }
+
+  .faq-paragraph:last-child {
+    margin-bottom: 0;
+  }
+
+  .faq-paragraph :global(strong) {
+    color: var(--cfv-accent);
+    font-weight: 600;
+  }
+
+  :global([data-theme="light"]) .faq-paragraph :global(strong) {
+    color: var(--cfv-primary);
+  }
+
+  .faq-paragraph :global(em) {
+    color: var(--cfv-text);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* ── Callout ("Con Lempira...") ────────────────────────── */
+  .faq-callout {
+    background: rgba(var(--cfv-accent-rgb), 0.06);
+    border-left: 2px solid var(--cfv-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 8px;
+  }
+
+  :global([data-theme="light"]) .faq-callout {
+    background: rgba(var(--cfv-accent-rgb), 0.06);
+    border-left-color: var(--cfv-primary);
+  }
+
+  .faq-callout p {
+    color: var(--cfv-text);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .faq-callout :global(.product-name) {
+    color: var(--cfv-accent);
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 15px;
+  }
+
+  :global([data-theme="light"]) .faq-callout :global(.product-name) {
+    color: var(--cfv-primary);
+  }
+
+  /* ── Stats row ─────────────────────────────────────────── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 0 0 20px;
+  }
+
+  .stat-card {
+    background: var(--cfv-surface-2);
+    border: 0.5px solid rgba(var(--cfv-accent-rgb), 0.15);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  :global([data-theme="light"]) .stat-card {
+    background: var(--cfv-surface-2);
+    border: 1px solid var(--cfv-border-subtle);
+  }
+
+  .stat-label {
+    color: var(--cfv-neutral);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: "Space Grotesk", sans-serif;
+    color: var(--cfv-accent);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  :global([data-theme="light"]) .stat-value {
+    color: var(--cfv-primary);
+  }
+
+  .stat-desc {
+    color: var(--cfv-text-muted);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  /* ── Bullet list ───────────────────────────────────────── */
+  .faq-bullets {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+  }
+
+  .faq-bullets li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    color: var(--cfv-text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .faq-bullets li::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--cfv-accent);
+    margin-top: 9px;
+    flex-shrink: 0;
+  }
+
+  :global([data-theme="light"]) .faq-bullets li::before {
+    background: var(--cfv-primary);
+  }
+
+  .faq-bullets li :global(strong) {
+    color: var(--cfv-accent);
+    font-weight: 600;
+  }
+
+  :global([data-theme="light"]) .faq-bullets li :global(strong) {
+    color: var(--cfv-primary);
+  }
+
+  /* ── Responsive ────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .faq-question {
+      padding: 18px 20px;
+    }
+
+    .faq-item.open .faq-content-inner {
+      padding: 18px 20px 22px;
+    }
+
+    .code-line {
+      font-size: 12px;
+    }
+
+    .faq-question-text {
+      font-size: 14px;
+    }
+  }
+</style>

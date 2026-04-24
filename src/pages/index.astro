@@ -8,21 +8,22 @@ import RetailCard from "../components/RetailCard.astro";
 import WholesaleCard from "../components/WholesaleCard.astro";
 import CopyToast from "../components/CopyToast.astro";
 import FAQ from "../components/FAQ.astro";
-import { faqData } from "../components/FAQ.astro";
+import LiveAnnouncer from "../components/LiveAnnouncer.astro";
+import { faqData } from "../data/faq";
 import PageFooter from "../components/PageFooter.astro";
 import "../styles/global.css";
 ---
 
 <Layout
-  title="Calculadora de precios de venta gratis — Lempira | Margen de ganancia, IVA y mayorista"
-  description="Calculá el precio de venta de tu producto gratis. Definí costo, margen de ganancia, IVA, comisión bancaria y descuento mayorista. Obtené tu precio justo al detalle y por mayor en Lempiras (HNL). Herramienta gratuita para emprendedores hondureños."
+  title="Calculadora de precio de venta — Lempira Honduras"
+  description="Calculá el precio de venta de tu producto en Honduras. Sumá costo, ganancia, IVA, comisión bancaria y precio mayorista gratis con Lempira."
   faq={faqData}
 >
   <AppBackground />
 
   <div class="container">
     <PageHeader />
-    <main>
+    <main id="main-content">
       <PageTitle />
 
       <section class="layout" aria-label="Calculadora de precios">
@@ -40,6 +41,7 @@ import "../styles/global.css";
   </div>
 
   <CopyToast />
+  <LiveAnnouncer />
 
   <script src="../scripts/calculator.ts"></script>
 </Layout>

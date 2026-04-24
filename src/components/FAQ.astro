@@ -1,51 +1,6 @@
 ---
-export interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-export const faqData: FAQItem[] = [
-  {
-    question: "¿Cómo calcular el precio de venta de un producto?",
-    answer:
-      "Para calcular el precio de venta, sumá al costo base tu porcentaje de ganancia, los costos de publicidad y otros gastos. Después aplicá el IVA sobre el subtotal y la comisión bancaria si vendés con tarjeta. Con Lempira hacés todo esto automáticamente: ingresás el costo y los porcentajes, y obtenés el precio final en tiempo real.",
-  },
-  {
-    question: "¿Cómo sacar el porcentaje de ganancia de un producto?",
-    answer:
-      "El margen de ganancia real se calcula dividiendo la ganancia neta entre el precio final y multiplicando por 100. Es importante entender que la ganancia neta NO es simplemente precio de venta menos costo: hay que restarle también el IVA, la comisión bancaria, publicidad y cualquier otro gasto. Por eso el margen real siempre es menor de lo que parece a simple vista. Lempira te muestra el margen real después de todos los costos e incluye un indicador de salud que te dice si tu margen es excelente, saludable, aceptable o marginal.",
-  },
-  {
-    question: "¿Cómo calcular el precio mayorista de un producto?",
-    answer:
-      "El precio mayorista se calcula aplicando un descuento sobre la ganancia del precio al detalle, no sobre el costo base. Por ejemplo, si tu ganancia es L 333 y ofrecés 30% de descuento mayorista, restás L 99.90 del subtotal y luego aplicás IVA y comisión bancaria. Lempira calcula ambos precios — detalle y mayorista — al mismo tiempo para que compares la ganancia de cada uno.",
-  },
-  {
-    question: "¿Cuánto IVA se cobra en Honduras?",
-    answer:
-      "En Honduras el Impuesto Sobre Ventas (ISV) es del 15% para la mayoría de productos y servicios. Este impuesto se aplica sobre el subtotal del producto (costo + ganancia + otros gastos). Lempira ya viene configurada con el 15% de IVA por defecto, pero podés ajustarlo si tu producto tiene una tasa diferente.",
-  },
-  {
-    question: "¿Cómo fijar precios si vendo con tarjeta de crédito o débito?",
-    answer:
-      "Cuando vendés con tarjeta, el banco cobra una comisión (generalmente entre 3% y 5% en Honduras). Esta comisión se aplica sobre el monto total con IVA incluido. Si no la incluís en tu precio, la pagás de tu ganancia. Lempira incluye la comisión bancaria en el cálculo (4.5% por defecto) para que tu precio final ya cubra ese costo.",
-  },
-  {
-    question: "¿Cómo ponerle precio a un producto casero o artesanal?",
-    answer:
-      "Para productos caseros o artesanales, empezá sumando todos los costos: materiales, tu tiempo de trabajo (ponele un valor por hora), empaque y transporte. Eso es tu costo base. Después agregá un porcentaje de ganancia (100% es lo recomendado para artesanías), publicidad y el IVA. Lempira te permite ingresar el costo base y ajustar cada porcentaje para encontrar tu precio justo.",
-  },
-  {
-    question: "¿Qué margen de ganancia es recomendable para un negocio?",
-    answer:
-      "Depende del rubro, pero como referencia: un margen real del 20% o más se considera excelente, entre 10% y 20% es saludable, entre 5% y 10% es aceptable, y menos de 5% es marginal (cuidado). Lempira te muestra el margen real después de IVA, comisión bancaria y todos los gastos, con un indicador visual de salud para que sepas si tu precio es sostenible.",
-  },
-  {
-    question: "¿Cuál es la fórmula del precio de venta?",
-    answer:
-      "La fórmula completa es: Precio final = (Costo + Ganancia + Publicidad + Otros costos) + IVA + Comisión bancaria. La ganancia, publicidad y otros costos se calculan como porcentaje del costo base. El IVA se aplica sobre el subtotal, y la comisión bancaria sobre el subtotal con IVA. Lempira aplica esta fórmula automáticamente y te muestra el desglose completo paso a paso.",
-  },
-];
+import FAQItem from "./FAQItem.astro";
+import { faqData } from "../data/faq";
 ---
 
 <section class="faq" aria-labelledby="faq-heading">
@@ -54,7 +9,9 @@ export const faqData: FAQItem[] = [
       <span class="kicker-line"></span>
       <span class="kicker-text">Preguntas frecuentes</span>
     </div>
-    <h2 id="faq-heading">Todo lo que necesitás saber sobre precios</h2>
+    <h2 id="faq-heading">
+      Todo lo que necesitás saber sobre <span class="accent-word">precios</span>
+    </h2>
     <p class="faq-subtitle">
       Respondemos las dudas más comunes de emprendedores hondureños sobre
       cómo calcular precios de venta, márgenes de ganancia e impuestos.
@@ -62,32 +19,134 @@ export const faqData: FAQItem[] = [
   </div>
 
   <div class="faq-list">
-    {faqData.map((item) => (
-      <details class="faq-item">
-        <summary class="faq-question">
-          <span>{item.question}</span>
-          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </summary>
-        <div class="faq-answer">
-          <p>{item.answer}</p>
-        </div>
-      </details>
+    {faqData.map((item, index) => (
+      <FAQItem
+        id={`faq-${index + 1}`}
+        question={item.question}
+        blocks={item.blocks}
+        defaultOpen={item.defaultOpen}
+      />
     ))}
   </div>
+
+  <section class="cfv-card" aria-labelledby="cfv-card-heading">
+    <div class="cfv-brand">
+      <a
+        href="https://cfv.technology"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cfv-logo-link"
+        aria-label="CFV Technology · Visitar sitio web"
+      >
+        <span class="cfv-logo-wrap" aria-hidden="true">
+          <img src="/logo-cfv-dark.svg" alt="" class="cfv-logo cfv-logo--dark" />
+          <img src="/logo-cfv-light.svg" alt="" class="cfv-logo cfv-logo--light" />
+        </span>
+      </a>
+      <div class="cfv-brand-text">
+        <p class="cfv-label">Hecho con orgullo por</p>
+        <h3 id="cfv-card-heading" class="cfv-name">CFV Technology</h3>
+        <p class="cfv-tagline">
+          Desarrollo de software para emprendedores hondureños.
+          <span class="cfv-lempira-note">
+            Lempira es gratuita porque creemos en tu negocio.
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="cfv-divider" aria-hidden="true"></div>
+
+    <div class="cfv-actions">
+      <p class="cfv-actions-label">¿Tenés un proyecto en mente?</p>
+      <div class="cfv-buttons">
+        <a
+          href="https://wa.me/50498002758"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-cta btn-cta--secondary"
+          aria-label="Contactar a CFV Technology por WhatsApp"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path>
+          </svg>
+          WhatsApp
+        </a>
+        <a
+          href="https://www.instagram.com/cfv.technology"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-cta btn-cta--secondary"
+          aria-label="Seguir a CFV Technology en Instagram"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.163c3.204 0 3.584.012 4.849.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.849.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path>
+          </svg>
+          Instagram
+        </a>
+        <a
+          href="https://www.facebook.com/cfv.technology"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-cta btn-cta--secondary"
+          aria-label="Seguir a CFV Technology en Facebook"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path>
+          </svg>
+          Facebook
+        </a>
+        <a
+          href="https://cfv.technology"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-cta btn-cta--primary btn-cta--website"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          cfv.technology
+        </a>
+      </div>
+    </div>
+  </section>
 </section>
 
+<script>
+  // Accordion toggle — uses event delegation so we only register one listener.
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const button = target?.closest("[data-faq-toggle]");
+    if (!button) return;
+
+    const item = button.closest("[data-faq-item]");
+    if (!item) return;
+
+    const contentId = button.getAttribute("aria-controls");
+    const content = contentId ? document.getElementById(contentId) : null;
+
+    const isOpen = item.classList.toggle("open");
+    button.setAttribute("aria-expanded", String(isOpen));
+    if (content) {
+      content.setAttribute("aria-hidden", String(!isOpen));
+    }
+  });
+</script>
+
 <style>
+  /* ── Section wrapper ───────────────────────────────────── */
   .faq {
     margin-top: 64px;
-    max-width: 780px;
+    max-width: 920px;
     margin-left: auto;
     margin-right: auto;
   }
 
   .faq-header {
     margin-bottom: 40px;
+    max-width: 620px;
   }
 
   .kicker {
@@ -122,135 +181,337 @@ export const faqData: FAQItem[] = [
   .faq h2 {
     font-family: "Manrope", sans-serif;
     font-weight: 800;
-    font-size: 32px;
-    letter-spacing: -1.2px;
-    line-height: 1.1;
-    margin-bottom: 12px;
+    font-size: 36px;
+    letter-spacing: -1.4px;
+    line-height: 1.05;
+    margin: 0 0 16px;
+    color: var(--cfv-text);
+  }
+
+  .faq h2 .accent-word {
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--cfv-accent);
+    letter-spacing: -0.5px;
+  }
+
+  :global([data-theme="light"]) .faq h2 .accent-word {
+    color: var(--cfv-primary);
   }
 
   .faq-subtitle {
     font-size: 15px;
     line-height: 1.6;
     color: var(--cfv-neutral);
-    max-width: 560px;
+    max-width: 540px;
+    margin: 0;
   }
 
+  /* ── List ──────────────────────────────────────────────── */
   .faq-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
   }
 
-  .faq-item {
-    background: rgba(var(--cfv-surface-rgb), 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(var(--cfv-accent-rgb), 0.12);
-    border-radius: 12px;
-    transition:
-      background 0.3s ease,
-      border-color 0.3s ease;
+  /* ── CFV Brand Card ────────────────────────────────────── */
+  .cfv-card {
+    margin-top: 48px;
+    padding: 32px;
+    background: rgba(var(--cfv-surface-rgb), 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.2);
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 32px;
   }
 
-  :global([data-theme="light"]) .faq-item {
+  :global([data-theme="light"]) .cfv-card {
     background: var(--cfv-bg);
     border: 1.5px solid var(--cfv-border-subtle);
     box-shadow:
       0 1px 3px rgba(0, 0, 0, 0.04),
-      0 4px 12px rgba(0, 0, 0, 0.02);
+      0 8px 24px rgba(0, 0, 0, 0.04);
   }
 
-  .faq-item:hover {
-    border-color: rgba(var(--cfv-accent-rgb), 0.25);
-  }
-
-  :global([data-theme="light"]) .faq-item:hover {
-    border-color: var(--cfv-border);
-  }
-
-  .faq-item[open] {
-    border-color: rgba(var(--cfv-accent-rgb), 0.3);
-  }
-
-  :global([data-theme="light"]) .faq-item[open] {
-    border-color: var(--cfv-primary);
-  }
-
-  .faq-question {
+  /* Brand column (left) */
+  .cfv-brand {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    padding: 20px 24px;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: -0.2px;
-    list-style: none;
-    user-select: none;
+    gap: 20px;
   }
 
-  .faq-question::-webkit-details-marker {
-    display: none;
-  }
-
-  .faq-question::marker {
-    display: none;
-    content: "";
-  }
-
-  .faq-question:focus-visible {
-    outline: none;
-    box-shadow: inset 0 0 0 2px rgba(var(--cfv-accent-rgb), 0.4);
-    border-radius: 12px;
-  }
-
-  .faq-chevron {
+  .cfv-logo-link {
     flex-shrink: 0;
+    display: block;
+    border-radius: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cfv-logo-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--cfv-accent-rgb), 0.2);
+  }
+
+  .cfv-logo-link:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.3);
+    border-radius: 14px;
+  }
+
+  .cfv-logo-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    background: rgba(var(--cfv-accent-rgb), 0.08);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  :global([data-theme="light"]) .cfv-logo-wrap {
+    background: var(--cfv-surface);
+    border: 1.5px solid var(--cfv-border-subtle);
+  }
+
+  .cfv-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .cfv-logo--dark { display: block; }
+  .cfv-logo--light { display: none; }
+
+  :global([data-theme="light"]) .cfv-logo--dark { display: none; }
+  :global([data-theme="light"]) .cfv-logo--light { display: block; }
+
+  .cfv-brand-text {
+    min-width: 0;
+  }
+
+  .cfv-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     color: var(--cfv-neutral);
-    transition: transform 0.3s ease;
+    margin: 0 0 4px;
   }
 
-  .faq-item[open] .faq-chevron {
-    transform: rotate(180deg);
+  .cfv-name {
+    font-family: "Manrope", sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--cfv-text);
+    margin: 0 0 8px;
+    line-height: 1.1;
   }
 
-  .faq-item[open] .faq-question {
+  .cfv-tagline {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--cfv-neutral);
+    margin: 0;
+  }
+
+  .cfv-lempira-note {
+    display: block;
+    margin-top: 3px;
     color: var(--cfv-accent);
+    font-style: italic;
+    font-size: 12px;
   }
 
-  :global([data-theme="light"]) .faq-item[open] .faq-question {
+  :global([data-theme="light"]) .cfv-lempira-note {
     color: var(--cfv-primary);
   }
 
-  .faq-answer {
-    padding: 0 24px 20px;
+  /* Vertical divider */
+  .cfv-divider {
+    width: 1px;
+    height: 80px;
+    background: rgba(var(--cfv-accent-rgb), 0.15);
+    flex-shrink: 0;
   }
 
-  .faq-answer p {
-    font-size: 14px;
-    line-height: 1.7;
+  :global([data-theme="light"]) .cfv-divider {
+    background: var(--cfv-border-subtle);
+  }
+
+  /* Actions column (right) */
+  .cfv-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 14px;
+  }
+
+  .cfv-actions-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cfv-text);
+    margin: 0;
+    letter-spacing: -0.1px;
+  }
+
+  .cfv-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+
+  .cfv-buttons .btn-cta--website {
+    grid-column: 1 / -1;
+  }
+
+  /* Shared button base */
+  .btn-cta {
+    font-family: "Manrope", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+    border: none;
+    letter-spacing: 0.2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* Primary — filled accent */
+  .btn-cta--primary {
+    background: var(--cfv-accent);
+    color: var(--cfv-bg);
+  }
+
+  :global([data-theme="light"]) .btn-cta--primary {
+    background: var(--cfv-primary);
+    color: #ffffff;
+  }
+
+  .btn-cta--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--cfv-accent-rgb), 0.3);
+  }
+
+  .btn-cta--primary:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.35);
+  }
+
+  /* Secondary — outline accent */
+  .btn-cta--secondary {
+    background: transparent;
+    color: var(--cfv-accent);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.4);
+  }
+
+  :global([data-theme="light"]) .btn-cta--secondary {
+    color: var(--cfv-primary);
+    border: 1.5px solid rgba(var(--cfv-accent-rgb), 0.4);
+  }
+
+  .btn-cta--secondary:hover {
+    background: rgba(var(--cfv-accent-rgb), 0.08);
+    border-color: var(--cfv-accent);
+  }
+
+  .btn-cta--secondary:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.25);
+  }
+
+  /* Ghost — icon-only style */
+  .btn-cta--ghost {
+    background: transparent;
     color: var(--cfv-neutral);
-    max-width: 640px;
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.15);
+    padding: 10px 14px;
   }
 
-  @media (max-width: 960px) {
+  :global([data-theme="light"]) .btn-cta--ghost {
+    border-color: var(--cfv-border-subtle);
+  }
+
+  .btn-cta--ghost:hover {
+    color: var(--cfv-accent);
+    border-color: rgba(var(--cfv-accent-rgb), 0.3);
+    background: rgba(var(--cfv-accent-rgb), 0.05);
+  }
+
+  :global([data-theme="light"]) .btn-cta--ghost:hover {
+    color: var(--cfv-primary);
+  }
+
+  .btn-cta--ghost:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.2);
+  }
+
+  /* ── Responsive ────────────────────────────────────────── */
+  @media (max-width: 760px) {
+    .cfv-card {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .cfv-divider {
+      width: 100%;
+      height: 1px;
+    }
+
+    .cfv-actions {
+      align-items: stretch;
+    }
+
+    .cfv-buttons {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cfv-card {
+      padding: 24px 20px;
+    }
+
+    .cfv-logo-wrap {
+      width: 52px;
+      height: 52px;
+    }
+
+    .cfv-name {
+      font-size: 18px;
+    }
+  }
+
+  /* ── Responsive ────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .faq {
+      margin-top: 48px;
+    }
+
     .faq h2 {
-      font-size: 26px;
+      font-size: 28px;
     }
 
-    .faq-question {
-      font-size: 14px;
-      padding: 16px 20px;
-    }
-
-    .faq-answer {
-      padding: 0 20px 16px;
-    }
-
-    .faq-answer p {
-      font-size: 13px;
-    }
   }
 </style>

@@ -17,7 +17,7 @@ const {
 <div class="margin-indicator" id={containerId}>
   <div class="margin-top">
     <span class="margin-top-label">Salud del margen</span>
-    <span class="margin-top-value" id={healthValueId} aria-live="polite" aria-atomic="true">{defaultLabel}</span>
+    <span class="margin-top-value" id={healthValueId}>{defaultLabel}</span>
   </div>
   <div
     class="margin-bar"
@@ -26,6 +26,7 @@ const {
     aria-valuemin="0"
     aria-valuemax="100"
     aria-label="Salud del margen"
+    aria-valuetext={defaultLabel}
     id={`${fillId}-bar`}
   >
     <div class="margin-fill" id={fillId} style="width: 0%"></div>

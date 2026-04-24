@@ -12,7 +12,7 @@ import ShareButton from "./ShareButton.astro";
         <div class="result-label">Precio mayorista</div>
         <div class="result-price primary">
           <span class="currency">L</span>
-          <output id="wholesalePrice" aria-live="polite">0.00</output>
+          <output id="wholesalePrice" for="cost profit iva bankFee marketing otherCosts wholesaleDiscount">0.00</output>
         </div>
       </div>
       <div class="actions-group">
@@ -28,7 +28,7 @@ import ShareButton from "./ShareButton.astro";
 
     <dl class="result-meta">
       <div class="meta-item">
-        <dt class="meta-label">Ganancia neta</dt>
+        <dt class="meta-label">Ganancia por unidad</dt>
         <dd class="meta-value" id="wholesaleProfit">L 0.00</dd>
       </div>
       <div class="meta-item">
@@ -126,6 +126,10 @@ import ShareButton from "./ShareButton.astro";
     font-family: "Space Grotesk", sans-serif;
     font-size: 14px;
     font-weight: 600;
+  }
+
+  .meta-value.negative {
+    color: var(--cfv-error);
   }
 
   .actions-group {

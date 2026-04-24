@@ -17,7 +17,7 @@ import ShareButton from "./ShareButton.astro";
         <div class="result-label">Precio final</div>
         <div class="result-price accent">
           <span class="currency">L</span>
-          <output id="finalPrice" aria-live="polite">0.00</output>
+          <output id="finalPrice" for="cost profit iva bankFee marketing otherCosts">0.00</output>
         </div>
       </div>
       <div class="actions-group">
@@ -33,7 +33,7 @@ import ShareButton from "./ShareButton.astro";
 
     <dl class="result-meta">
       <div class="meta-item">
-        <dt class="meta-label">Ganancia neta</dt>
+        <dt class="meta-label">Ganancia por unidad</dt>
         <dd class="meta-value positive" id="netProfit">L 0.00</dd>
       </div>
       <div class="meta-item">

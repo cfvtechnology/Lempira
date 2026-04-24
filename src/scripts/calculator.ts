@@ -19,6 +19,19 @@ function formatL(n: number): string {
   return "L " + format(n);
 }
 
+let hasInitializedAnnouncements = false;
+let announcementTimer: number | undefined;
+
+function announceCalculation(message: string) {
+  const liveRegion = document.getElementById("calculatorLiveRegion");
+  if (!liveRegion) return;
+
+  if (announcementTimer) window.clearTimeout(announcementTimer);
+  announcementTimer = window.setTimeout(() => {
+    liveRegion.textContent = message;
+  }, 300);
+}
+
 function getVal(id: string): number {
   const v = parseFloat((document.getElementById(id) as HTMLInputElement).value);
   return isNaN(v) ? 0 : v;
@@ -90,6 +103,7 @@ function calculate() {
   const retailFillWidth = Math.max(0, Math.min(100, netMargin * 2));
   document.getElementById("marginFill")!.style.width = retailFillWidth + "%";
   document.getElementById("marginFill-bar")!.setAttribute("aria-valuenow", String(Math.round(retailFillWidth)));
+  document.getElementById("marginFill-bar")!.setAttribute("aria-valuetext", `${health.label} · ${netMargin.toFixed(1)}%`);
   document
     .getElementById("retailMarginIndicator")!
     .classList.toggle("warning", health.warning);
@@ -98,6 +112,13 @@ function calculate() {
   const wholesaleCard = document.getElementById("wholesaleCard")!;
   if (wholesaleDiscPct <= 0) {
     wholesaleCard.style.display = "none";
+    if (hasInitializedAnnouncements) {
+      announceCalculation(
+        `Precio al detalle ${formatL(finalPrice)}. Ganancia por unidad ${formatL(netProfit)}. Margen real ${netMargin.toFixed(1)}%.`,
+      );
+    } else {
+      hasInitializedAnnouncements = true;
+    }
     return;
   }
   wholesaleCard.style.display = "";
@@ -137,14 +158,26 @@ function calculate() {
     wholesaleHealth.label + " · " + wholesaleMarginPct.toFixed(1) + "%";
   const wholesaleFillWidth = Math.max(
     0,
-    Math.min(100, Math.abs(wholesaleMarginPct) * 2),
+    Math.min(100, wholesaleMarginPct * 2),
   );
   document.getElementById("wholesaleMarginFill")!.style.width =
     wholesaleFillWidth + "%";
   document.getElementById("wholesaleMarginFill-bar")!.setAttribute("aria-valuenow", String(Math.round(wholesaleFillWidth)));
+  document.getElementById("wholesaleMarginFill-bar")!.setAttribute(
+    "aria-valuetext",
+    `${wholesaleHealth.label} · ${wholesaleMarginPct.toFixed(1)}%`,
+  );
   document
     .getElementById("wholesaleMarginIndicator")!
     .classList.toggle("warning", wholesaleHealth.warning);
+
+  if (hasInitializedAnnouncements) {
+    announceCalculation(
+      `Precio al detalle ${formatL(finalPrice)}. Ganancia por unidad ${formatL(netProfit)}. Margen real ${netMargin.toFixed(1)}%. Precio mayorista ${formatL(wholesaleFinal)}. Ganancia por unidad ${formatL(wholesaleNet)}. Margen mayorista ${wholesaleMarginPct.toFixed(1)}%.`,
+    );
+  } else {
+    hasInitializedAnnouncements = true;
+  }
 }
 
 // ──────────────────────────────────────────────────────────────
@@ -202,9 +235,10 @@ function copyPrice(type: string) {
   }
 
   const text = "L " + value;
-  navigator.clipboard.writeText(text).catch(() => {});
-
-  showToast(label + " copiado: " + text);
+  navigator.clipboard
+    .writeText(text)
+    .then(() => showToast(label + " copiado: " + text))
+    .catch(() => showToast("No se pudo copiar el precio"));
 }
 
 function showToast(message: string) {
