@@ -52,7 +52,8 @@ function calculate() {
   const bankPct = getVal("bankFee");
   const mktPct = getVal("marketing");
   const otherPct = getVal("otherCosts");
-  const wholesaleDiscPct = wholesaleEnabled ? getVal("wholesaleDiscount") : 0;
+  // Always compute with the input value so the locked preview shows real numbers.
+  const wholesaleDiscPct = getVal("wholesaleDiscount");
 
   // Product name
   const productName = (document.getElementById("productName") as HTMLInputElement).value.trim();
@@ -108,20 +109,11 @@ function calculate() {
     .getElementById("retailMarginIndicator")!
     .classList.toggle("warning", health.warning);
 
-  // WHOLESALE
-  const wholesaleCard = document.getElementById("wholesaleCard")!;
-  if (wholesaleDiscPct <= 0) {
-    wholesaleCard.style.display = "none";
-    if (hasInitializedAnnouncements) {
-      announceCalculation(
-        `Precio al detalle ${formatL(finalPrice)}. Ganancia por unidad ${formatL(netProfit)}. Margen real ${netMargin.toFixed(1)}%.`,
-      );
-    } else {
-      hasInitializedAnnouncements = true;
-    }
-    return;
-  }
-  wholesaleCard.style.display = "";
+  // WHOLESALE — always compute so the locked preview shows real numbers.
+  const wholesaleWrap = document.getElementById("wholesaleWrap")!;
+  const wholesaleContent = document.getElementById("wholesaleContent")!;
+  wholesaleWrap.classList.toggle("locked", !wholesaleEnabled);
+  wholesaleContent.setAttribute("aria-hidden", String(!wholesaleEnabled));
 
   const wholesaleDiscount = (profit * wholesaleDiscPct) / 100;
   const wholesaleSub = subtotal - wholesaleDiscount;
@@ -172,9 +164,11 @@ function calculate() {
     .classList.toggle("warning", wholesaleHealth.warning);
 
   if (hasInitializedAnnouncements) {
-    announceCalculation(
-      `Precio al detalle ${formatL(finalPrice)}. Ganancia por unidad ${formatL(netProfit)}. Margen real ${netMargin.toFixed(1)}%. Precio mayorista ${formatL(wholesaleFinal)}. Ganancia por unidad ${formatL(wholesaleNet)}. Margen mayorista ${wholesaleMarginPct.toFixed(1)}%.`,
-    );
+    const retailMsg = `Precio al detalle ${formatL(finalPrice)}. Ganancia por unidad ${formatL(netProfit)}. Margen real ${netMargin.toFixed(1)}%.`;
+    const wholesaleMsg = wholesaleEnabled
+      ? ` Precio mayorista ${formatL(wholesaleFinal)}. Ganancia por unidad ${formatL(wholesaleNet)}. Margen mayorista ${wholesaleMarginPct.toFixed(1)}%.`
+      : "";
+    announceCalculation(retailMsg + wholesaleMsg);
   } else {
     hasInitializedAnnouncements = true;
   }

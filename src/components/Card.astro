@@ -15,7 +15,7 @@ const {
   animationDelay,
   hidden = false,
   as: Tag = "article",
-} = Astro.props;
+}: Props = Astro.props;
 
 const style = [
   animationDelay ? `animation-delay: ${animationDelay}; opacity: 0` : "",

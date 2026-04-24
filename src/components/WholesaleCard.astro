@@ -5,53 +5,84 @@ import MarginIndicator from "./MarginIndicator.astro";
 import ShareButton from "./ShareButton.astro";
 ---
 
-<Card title="Precio mayorista" badge="Mayorista" animationDelay="0.2s" id="wholesaleCard" hidden>
-  <div class="result-headline">
-    <div class="price-header">
-      <div>
-        <div class="result-label">Precio mayorista</div>
-        <div class="result-price primary">
-          <span class="currency">L</span>
-          <output id="wholesalePrice" for="cost profit iva bankFee marketing otherCosts wholesaleDiscount">0.00</output>
+<Card title="Precio mayorista" badge="Mayorista" animationDelay="0.2s" id="wholesaleCard">
+  <div class="wholesale-wrap locked" id="wholesaleWrap">
+    <div class="wholesale-content" id="wholesaleContent" aria-hidden="true">
+      <div class="result-headline">
+        <div class="price-header">
+          <div>
+            <div class="result-label">Precio mayorista</div>
+            <div class="result-price primary">
+              <span class="currency">L</span>
+              <output id="wholesalePrice" for="cost profit iva bankFee marketing otherCosts wholesaleDiscount">0.00</output>
+            </div>
+          </div>
+          <div class="actions-group">
+            <button class="icon-btn" onclick="copyPrice('wholesale')" title="Copiar precio" aria-label="Copiar precio">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+            <ShareButton id="wholesaleShareMenu" />
+          </div>
         </div>
+
+        <dl class="result-meta">
+          <div class="meta-item">
+            <dt class="meta-label">Ganancia por unidad</dt>
+            <dd class="meta-value" id="wholesaleProfit">L 0.00</dd>
+          </div>
+          <div class="meta-item">
+            <dt class="meta-label">Margen real</dt>
+            <dd class="meta-value" id="wholesaleMargin">0.0%</dd>
+          </div>
+        </dl>
       </div>
-      <div class="actions-group">
-        <button class="icon-btn" onclick="copyPrice('wholesale')" title="Copiar precio" aria-label="Copiar precio">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-          </svg>
-        </button>
-        <ShareButton id="wholesaleShareMenu" />
-      </div>
+
+      <MarginIndicator
+        containerId="wholesaleMarginIndicator"
+        healthValueId="wholesaleHealthValue"
+        fillId="wholesaleMarginFill"
+      />
+
+      <dl class="breakdown">
+        <BreakdownRow label="Subtotal detalle" valueId="wh-subtotal" markerType="neutral" />
+        <BreakdownRow label="Dcto. s/ganancia" valueId="wh-discount" markerType="sub" pctId="wh-disc-pct" defaultPct="30%" negativeColor />
+        <BreakdownRow label="Subtotal mayorista" valueId="wh-submayorista" isSubtotal />
+        <BreakdownRow label="IVA" valueId="wh-iva" markerType="add" />
+        <BreakdownRow label="Comisión banco" valueId="wh-fee" markerType="add" />
+        <BreakdownRow label="Pub + Otros" valueId="wh-extras" markerType="neutral" />
+      </dl>
     </div>
 
-    <dl class="result-meta">
-      <div class="meta-item">
-        <dt class="meta-label">Ganancia por unidad</dt>
-        <dd class="meta-value" id="wholesaleProfit">L 0.00</dd>
+    <div class="wholesale-overlay" id="wholesaleOverlay">
+      <div class="overlay-content">
+        <span class="overlay-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </span>
+        <h3 class="overlay-title">Activá el precio mayorista</h3>
+        <p class="overlay-text">
+          Calculá el precio con descuento para ventas al por mayor y compará la
+          ganancia con el precio al detalle.
+        </p>
+        <button
+          type="button"
+          class="overlay-cta"
+          onclick="toggleWholesale()"
+          aria-label="Activar calculadora de precio mayorista"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Activar calculadora
+        </button>
       </div>
-      <div class="meta-item">
-        <dt class="meta-label">Margen real</dt>
-        <dd class="meta-value" id="wholesaleMargin">0.0%</dd>
-      </div>
-    </dl>
+    </div>
   </div>
-
-  <MarginIndicator
-    containerId="wholesaleMarginIndicator"
-    healthValueId="wholesaleHealthValue"
-    fillId="wholesaleMarginFill"
-  />
-
-  <dl class="breakdown">
-    <BreakdownRow label="Subtotal detalle" valueId="wh-subtotal" markerType="neutral" />
-    <BreakdownRow label="Dcto. s/ganancia" valueId="wh-discount" markerType="sub" pctId="wh-disc-pct" defaultPct="30%" negativeColor />
-    <BreakdownRow label="Subtotal mayorista" valueId="wh-submayorista" isSubtotal />
-    <BreakdownRow label="IVA" valueId="wh-iva" markerType="add" />
-    <BreakdownRow label="Comisión banco" valueId="wh-fee" markerType="add" />
-    <BreakdownRow label="Pub + Otros" valueId="wh-extras" markerType="neutral" />
-  </dl>
 </Card>
 
 <style>
@@ -147,5 +178,126 @@ import ShareButton from "./ShareButton.astro";
 
   :global([data-theme="light"]) .breakdown {
     border-top-color: var(--cfv-border-subtle);
+  }
+
+  /* ── Locked state overlay ─────────────────────────────── */
+  .wholesale-wrap {
+    position: relative;
+  }
+
+  .wholesale-content {
+    transition: filter 0.4s ease, opacity 0.4s ease;
+  }
+
+  .wholesale-wrap.locked .wholesale-content {
+    filter: blur(6px);
+    opacity: 0.55;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .wholesale-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    border-radius: 16px;
+    background: rgba(var(--cfv-surface-rgb), 0.35);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 1;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    z-index: 2;
+  }
+
+  :global([data-theme="light"]) .wholesale-overlay {
+    background: rgba(var(--cfv-bg-rgb), 0.5);
+  }
+
+  .wholesale-wrap:not(.locked) .wholesale-overlay {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .overlay-content {
+    max-width: 320px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .overlay-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(var(--cfv-accent-rgb), 0.12);
+    border: 1px solid rgba(var(--cfv-accent-rgb), 0.25);
+    color: var(--cfv-accent);
+    margin-bottom: 2px;
+  }
+
+  :global([data-theme="light"]) .overlay-icon {
+    background: rgba(var(--cfv-accent-rgb), 0.08);
+    border-color: rgba(var(--cfv-accent-rgb), 0.3);
+    color: var(--cfv-primary);
+  }
+
+  .overlay-title {
+    font-family: "Manrope", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--cfv-text);
+    margin: 0;
+  }
+
+  .overlay-text {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--cfv-neutral);
+    margin: 0 0 4px;
+  }
+
+  .overlay-cta {
+    font-family: "Manrope", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: var(--cfv-accent);
+    color: var(--cfv-bg);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  :global([data-theme="light"]) .overlay-cta {
+    background: var(--cfv-primary);
+    color: #ffffff;
+  }
+
+  .overlay-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--cfv-accent-rgb), 0.3);
+  }
+
+  .overlay-cta:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--cfv-accent-rgb), 0.35);
   }
 </style>
