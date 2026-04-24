@@ -479,31 +479,69 @@ import { faqData } from "../data/faq";
       height: 1px;
     }
 
+    .cfv-brand {
+      min-width: 0;
+    }
+
+    .cfv-brand-text {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .cfv-tagline {
+      white-space: normal;
+      word-break: break-word;
+    }
+
     .cfv-actions {
       align-items: stretch;
     }
 
+    /* 2 columns: WhatsApp | Instagram — Facebook spans full */
     .cfv-buttons {
+      grid-template-columns: 1fr 1fr;
       width: 100%;
+    }
+
+    .cfv-buttons .btn-cta--website {
+      grid-column: 1 / -1;
+    }
+
+    /* Third social button (Facebook) spans full width too */
+    .cfv-buttons .btn-cta--secondary:nth-child(3) {
+      grid-column: 1 / -1;
     }
   }
 
   @media (max-width: 480px) {
     .cfv-card {
-      padding: 24px 20px;
+      padding: 20px 16px;
     }
 
     .cfv-logo-wrap {
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
     }
 
     .cfv-name {
-      font-size: 18px;
+      font-size: 17px;
+    }
+
+    .cfv-label {
+      font-size: 9px;
+    }
+
+    /* All buttons stacked on very small screens */
+    .cfv-buttons {
+      grid-template-columns: 1fr;
+    }
+
+    .cfv-buttons .btn-cta--secondary:nth-child(3) {
+      grid-column: 1;
     }
   }
 
-  /* ── Responsive ────────────────────────────────────────── */
   @media (max-width: 640px) {
     .faq {
       margin-top: 48px;
@@ -512,6 +550,5 @@ import { faqData } from "../data/faq";
     .faq h2 {
       font-size: 28px;
     }
-
   }
 </style>
